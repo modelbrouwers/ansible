@@ -1,0 +1,8 @@
+---
+# Make sure the virtualenv is created and requirements are installed
+
+- name: Install requirements
+  pip: virtualenv={{ venv }}
+       chdir={{ project_home }}
+       requirements=requirements/base.txt
+       virtualenv_command={{ venv_command }}

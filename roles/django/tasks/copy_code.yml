@@ -1,0 +1,18 @@
+---
+# Check out the repo, fast forward and create the necesary dirs
+
+- name: Clone and/or update the repo
+  git: repo={{ repository }}
+       dest="{{ project_home }}"
+       version={{ release }}
+       force=yes
+       depth=1
+
+- name: Ensure log dir exists
+  file: path={{ project_home }}/log state=directory
+
+# - name: Ensure media dir exists
+#   file: path={{ project_home }}/media state=directory
+
+# - name: Create secrets file
+#   file: ...

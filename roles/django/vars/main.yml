@@ -1,0 +1,4 @@
+---
+# combine variables for easier use
+project_home: "{{ ansible_env.HOME }}/django/{{ deploy_env }}"
+venv: "{{ ansible_env.HOME }}/.virtualenvs/{{ deploy_env }}"
