@@ -6,3 +6,5 @@
        chdir={{ project_home }}
        requirements=requirements/base.txt
        virtualenv_command={{ venv_command }}
+  notify:
+    - restart uwsgi

@@ -1,0 +1,5 @@
+---
+# Install the php dependencies
+
+- name: Install dependencies with composer
+  composer: working_dir={{ project_home }}

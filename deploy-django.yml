@@ -1,12 +1,14 @@
 ---
 # Deploys the application code to the server
-- name: update the application to the latest version
+- name: Update the application to the latest version
   hosts: web
   vars:
     deploy_env: staging
-    repository: https://github.com/modelbrouwers/modelbrouwers.git
     release: master
-    settings_module: conf.settings.staging
+    repository: https://github.com/modelbrouwers/modelbrouwers.git
+    settings_module: conf.settings.{{ deploy_env }}
+    project_home: "{{ ansible_env.HOME }}/django/{{ deploy_env }}"
   remote_user: modelbrouw
   roles:
     - django
+    - php
