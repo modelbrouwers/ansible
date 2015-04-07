@@ -1,11 +1,5 @@
 ---
 
-- name: Run syncdb
-  django_manage: app_path={{ project_home }}/src/
-                 command=syncdb
-                 settings={{ settings_module }}
-                 virtualenv={{ venv }}
-
 - name: Run database migrations
   django_manage: app_path={{ project_home }}/src/
                  command=migrate
