@@ -4,4 +4,5 @@
 - include: copy_code.yml
 - include: dependencies.yml
 - include: migrate.yml
+- include: frontend.yml
 - include: collectstatic.yml
