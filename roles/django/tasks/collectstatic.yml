@@ -6,3 +6,9 @@
                  link=yes
                  settings={{ settings_module }}
                  virtualenv={{ venv }}
+
+- name: Bundle the systemjs apps
+  django_manage: app_path={{ project_home }}/src/
+                 command=systemjs_bundle
+                 settings={{ settings_module }}
+                 virtualenv={{ venv }}
