@@ -6,5 +6,7 @@
 
 
 - name: Bundle the SystemJS apps
-  shell: php bin/systemjs_bundle.php jspm:bundle
+  shell: php bin/systemjs_bundle.php jspm:bundle --jspm-executable /opt/bin/jspm
          chdir={{ project_home }}
+  environment:
+    PATH: /opt/bin/:{{ ansible_env.PATH }}

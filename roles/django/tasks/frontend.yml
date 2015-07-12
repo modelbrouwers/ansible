@@ -3,6 +3,18 @@
 
 - name: Install dependencies with Node
   npm: path={{ project_home }} production=yes
+       executable=/usr/local/bin/npm
+
+- name: Install JSPM
+  npm: name=jspm
+       global=yes
+       executable=/usr/local/bin/npm
+  remote_user: root
+
+- name: Install dependencies with JSPM
+  command: /opt/bin/jspm install
+  args:
+    chdir: "{{ project_home }}"
 
 # - name: Install dependencies with Bower
 #   bower: offline=yes path={{ project_home }}
