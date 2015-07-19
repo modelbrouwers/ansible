@@ -1,9 +1,11 @@
 ---
 
-- name: Create the nginx vhost
+- name: Create/update the nginx vhost
   template: src=vhost.j2
             dest=/usr/local/nginx/conf/vhost/modelbrouwers.nl.conf
             owner=root
             group=root
             mode=0644
   remote_user: root
+  notify:
+    - restart nginx
