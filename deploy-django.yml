@@ -10,5 +10,6 @@
     project_home: "{{ ansible_env.HOME }}/django/{{ deploy_env }}"
   remote_user: modelbrouw
   roles:
+    - nginx
     - django
     - php
