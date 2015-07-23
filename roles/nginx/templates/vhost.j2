@@ -30,7 +30,7 @@ server {
     if (-f $document_root/maintenance.html ) {
         set $maintenance on;
     }
-    if ($remote_addr = "62.45.209.60") {
+    if ($remote_addr = "163.158.230.128") {
         set $maintenance off;
     }
     if ($maintenance = on) {
