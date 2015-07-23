@@ -6,3 +6,4 @@
 - include: migrate.yml
 - include: frontend.yml
 - include: collectstatic.yml
+- include: cronjobs.yml

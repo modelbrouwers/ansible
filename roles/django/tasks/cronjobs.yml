@@ -1,0 +1,6 @@
+---
+
+- name: Clear compress cache
+  cron: name="clear compress cache"
+        hour=4
+        job="rm -r {{ project_home }}/static/CACHE"
