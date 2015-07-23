@@ -3,3 +3,4 @@
 
 - name: restart nginx
   service: name=nginx state=reloaded
+  remote_user: root
