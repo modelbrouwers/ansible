@@ -1,6 +1,7 @@
 ---
 
-- name: Clear compress cache
+- name: Cron - Clear compress cache
   cron: name="clear compress cache"
+        minute=0
         hour=4
-        job="rm -r {{ project_home }}/static/CACHE"
+        job="rm -r {{ project_home }}/static/CACHE && memflush --servers=localhost:11211"
