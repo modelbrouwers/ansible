@@ -1,0 +1,4 @@
+---
+
+- name: Make sure symlink to public_html exists
+  file: src={{ docroot }} dest={{ project_home}}/public_html state=link

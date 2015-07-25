@@ -8,8 +8,11 @@
     repository: https://github.com/modelbrouwers/modelbrouwers.git
     settings_module: conf.settings.{{ deploy_env }}
     project_home: "{{ ansible_env.HOME }}/django/{{ deploy_env }}"
+    docroot_map: {staging: "{{ ansible_env.HOME }}/public_html/staging", production: "{{ ansible_env.HOME }}/public_html"}
+    docroot: "{{ docroot_map.get(deploy_env) }}"
   remote_user: modelbrouw
   roles:
     - nginx
     - django
     - php
+    - shop
