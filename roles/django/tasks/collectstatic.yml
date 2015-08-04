@@ -1,5 +1,8 @@
 ---
 
+- name: Flush memcached
+  shell: memflush --servers=localhost:11211
+
 - name: Run collectstatic
   django_manage: app_path={{ project_home }}/src/
                  command=collectstatic
