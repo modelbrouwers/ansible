@@ -1,0 +1,5 @@
+---
+
+- name: Setup the maintenance page
+  template: src=maintenance.html.j2
+            dest="{{ docroot }}/maintenance.html"

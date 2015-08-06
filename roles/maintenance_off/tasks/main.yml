@@ -1,0 +1,4 @@
+---
+
+- name: Turn off maintenance mode
+  file: path="{{ docroot }}/maintenance.html" state=absent

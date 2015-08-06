@@ -12,7 +12,9 @@
     docroot: "{{ docroot_map.get(deploy_env) }}"
   remote_user: modelbrouw
   roles:
+    - maintenance_on
     - nginx
     - django
     - php
     - shop
+    - maintenance_off
