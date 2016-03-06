@@ -10,3 +10,7 @@
          chdir={{ project_home }}
   environment:
     PATH: /opt/bin/:{{ ansible_env.PATH }}
+
+
+- name: Clear the phpBB3 template cache
+  shell: rm {{ docroot }}/phpBB3/cache/*tpl_*.html.php
