@@ -1,0 +1,5 @@
+---
+# Set up the base system: security settings, basic system packages...
+
+- include: auto-updates.yml
+- include: firewall.yml

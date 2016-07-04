@@ -1,0 +1,20 @@
+---
+
+# Playbook to set up a new server from scratch
+
+- name: Provision the server
+  hosts: new.modelbrouwers.nl
+  remote_user: root
+  roles:
+    - base
+    # - ftp
+    # - mail
+    # - postgres
+    # - mysql
+    # - redis
+    # - memcached
+    # - apache
+    # - nginx
+    # - storage
+    # - fail2ban
+    # - logwatch
