@@ -15,5 +15,4 @@
     # - memcached
     # - apache
     # - nginx
-    # - storage
     # - logwatch

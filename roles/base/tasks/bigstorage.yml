@@ -1,0 +1,10 @@
+---
+
+- name: Mount bigstorage
+  mount:
+    name=/mnt/bigstorage
+    src=/dev/vdb1
+    state=mounted
+    fstype=xfs
+    dump=0
+    passno=0
