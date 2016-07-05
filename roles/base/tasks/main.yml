@@ -6,3 +6,7 @@
 - include: fail2ban.yml
 - include: bigstorage.yml
 - include: logwatch.yml
+
+- include: databases.yml
+- include: webservers.yml
+- include: caches.yml

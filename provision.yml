@@ -11,9 +11,3 @@
     - base
     # - ftp
     # - mail
-    # - postgres
-    # - mysql
-    # - redis
-    # - memcached
-    # - apache
-    # - nginx
