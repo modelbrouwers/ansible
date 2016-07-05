@@ -5,6 +5,8 @@
 - name: Provision the server
   hosts: new.modelbrouwers.nl
   remote_user: root
+  vars:
+    admin_email: "sergei@modelbrouwers.nl"
   roles:
     - base
     # - ftp
@@ -15,4 +17,3 @@
     # - memcached
     # - apache
     # - nginx
-    # - logwatch

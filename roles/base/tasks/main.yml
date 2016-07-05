@@ -5,3 +5,4 @@
 - include: firewall.yml
 - include: fail2ban.yml
 - include: bigstorage.yml
+- include: logwatch.yml
