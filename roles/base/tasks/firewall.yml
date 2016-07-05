@@ -3,7 +3,7 @@
 # Set up the firewall configuration
 
 - name: Install ufw
-  apt: name=ufw state=present
+  package: name=ufw state=present
 
 - name: Configure ufw defaults
   ufw: direction={{ item.direction }} policy={{ item.policy }}

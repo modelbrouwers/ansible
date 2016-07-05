@@ -3,3 +3,4 @@
 
 - include: auto-updates.yml
 - include: firewall.yml
+- include: fail2ban.yml

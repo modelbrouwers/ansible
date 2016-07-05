@@ -16,5 +16,4 @@
     # - apache
     # - nginx
     # - storage
-    # - fail2ban
     # - logwatch
