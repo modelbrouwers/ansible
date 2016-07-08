@@ -3,5 +3,8 @@
 - name: Deploy the Modelbrouwers.nl domain
   hosts: new.modelbrouwers.nl
   remote_user: modelbrouw
+  vars:
+    opencart_url: "https://www.opencart.com/index.php?route=download/download/download&download_id=31"
+    opencart_dir: opencart-1.5.5.1
   roles:
-
+    - shop
