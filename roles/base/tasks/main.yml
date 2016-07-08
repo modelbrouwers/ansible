@@ -10,3 +10,4 @@
 - include: databases.yml
 - include: webservers.yml
 - include: caches.yml
+- include: php.yml
