@@ -28,9 +28,9 @@
 
 - name: Set group-write permissions on the required folders
   file:
-    path={{ ansible_env.HOME }}/public_html/winkel/{{ item }}/
+    path={{ ansible_env.HOME }}/public_html/winkel/{{ item }}
     state=directory
-    mode: 0770
+    mode=0770
     recurse=yes
   with_items:
     - image
@@ -51,5 +51,29 @@
   mysql_user: name="{{ shop_db.user }}" priv="{{ shop_db.name }}.*:ALL"
   remote_user: root
 
-- name: Move admin location
-  command: mv {{ ansible_env.HOME }}/public_html/winkel/admin {{ ansible_env.HOME }}/public_html/winkel/{{ shop_admin_location }}
+- name: Ensure the config files are touched
+  file: dest={{ ansible_env.HOME }}/public_html/winkel/{{ item.dest }} state={{ item.state }}
+  with_items:
+    - {dest: config.php, state: file}
+    - {dest: config-dist.php, state: absent}
+    - {dest: admin/config.php, state: file}
+    - {dest: admin/config-dist.php, state: absent}
+
+- name: Run the CLI installer
+  command:
+    php cli_install.php install --db_host localhost \
+                                 --db_user {{ shop_db.user }} \
+                                 --db_password {{ shop_db.password }} \
+                                 --db_name {{ shop_db.name }} \
+                                 --username admin \
+                                 --password admin \
+                                 --email info@modelbrouwers.nl \
+                                 --agree_tnc yes \
+                                 --http_server https://modelbrouwers.nl/winkel
+  args:
+    chdir: "{{ ansible_env.HOME }}/public_html/winkel/install"
+    # creates: "{{ ansible_env.HOME }}/public_html/winkel/config.php"
+
+
+# - name: Move admin location
+#   command: mv {{ ansible_env.HOME }}/public_html/winkel/admin {{ ansible_env.HOME }}/public_html/winkel/{{ shop_admin_location }}
