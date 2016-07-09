@@ -1,10 +1,16 @@
 ---
 
 - name: Deploy the Modelbrouwers.nl domain
-  hosts: new.modelbrouwers.nl
+  hosts: new
   remote_user: modelbrouw
   vars:
+    user: modelbrouw
     opencart_url: "https://www.opencart.com/index.php?route=download/download/download&download_id=31"
     opencart_dir: opencart-1.5.5.1
+    server:
+      name: modelbrouwers.nl
+      aliases:
+        - new.modelbrouwers.nl
   roles:
-    - shop
+    - apache
+    # - shop
