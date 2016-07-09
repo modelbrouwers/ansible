@@ -17,6 +17,6 @@
       port: 8002
     home_ip: 163.158.222.105
   roles:
-    # - apache
+    - apache
     - nginx
-    # - shop
+    - shop
