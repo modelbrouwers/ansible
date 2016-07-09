@@ -1,0 +1,28 @@
+---
+
+- name: Disable the default nginx vhost
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  remote_user: root
+  notify:
+    - reload nginx
+
+- name: Ensure the log directory exists
+  file: path=/var/log/nginx/{{ user }} state=directory owner=www-data group=www-data
+  remote_user: root
+
+- name: Install the Nginx config file
+  template:
+    src=nginx.conf.j2
+    dest=/etc/nginx/sites-available/{{ user }}
+  remote_user: root
+  notify:
+    - reload nginx
+
+- name: Ensure the site is enabled (symlink)
+  file:
+    src=../sites-available/{{ user }}
+    dest=/etc/nginx/sites-enabled/{{ user }}
+    state=link
+  remote_user: root
+  notify:
+    - reload nginx

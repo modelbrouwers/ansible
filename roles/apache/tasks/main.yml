@@ -1,4 +1,5 @@
 ---
+
 - name: Ensure the log directory exists
   file: dest=/var/log/apache2/{{ user }} state=directory owner=www-data group=www-data
   remote_user: root

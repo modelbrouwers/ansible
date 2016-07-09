@@ -1,0 +1,36 @@
+---
+
+- name: Load ssl private keys
+  include_vars: vars/ssl.yml
+  no_log: true
+
+- name: Send private ssl keys
+  copy:
+    content="{{ ssl_private_key }}"
+    dest=/etc/ssl/{{ user }}.key
+    mode=0600
+    owner=root
+    group=root
+  no_log: true
+  remote_user: root
+
+- name: Copy ssl keys and certs
+  copy:
+    src=wildcard.{{ user }}.crt
+    dest=/etc/ssl/wildcard.{{ user }}.crt
+    mode=0600
+    owner=root
+    group=root
+  remote_user: root
+
+- name: Check if custom DH cert exists
+  stat: path=/etc/ssl/certs/dhparam.pem
+  register: has_custom_dh_cert
+  remote_user: root
+
+- name: Generate custom DH cert
+  shell: openssl dhparam -out dhparam.pem 4096
+         chdir=/etc/ssl/certs/
+  when:
+    - has_custom_dh_cert.stat.exists == False
+  remote_user: root
