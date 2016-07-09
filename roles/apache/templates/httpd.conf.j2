@@ -11,6 +11,7 @@
         # php_admin_flag engine ON
         # php_admin_value sendmail_path '/usr/sbin/sendmail -t -i -f modelbrouw@modelbrouwers.nl'
         # php_admin_value open_basedir /home/modelbrouw/:/tmp:/var/tmp:/usr/local/lib/php/
+        Require all granted
     </Directory>
 
     Header always append X-Frame-Options SAMEORIGIN
