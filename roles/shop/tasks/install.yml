@@ -52,7 +52,12 @@
   remote_user: root
 
 - name: Ensure the config files are touched
-  file: dest={{ ansible_env.HOME }}/public_html/winkel/{{ item.dest }} state={{ item.state }}
+  file:
+    dest={{ ansible_env.HOME }}/public_html/winkel/{{ item.dest }}
+    state={{ item.state }}
+    owner={{ user }}
+    group={{ user }}
+    mode=0660
   with_items:
     - {dest: config.php, state: file}
     - {dest: config-dist.php, state: absent}
@@ -75,5 +80,18 @@
 #     # creates: "{{ ansible_env.HOME }}/public_html/winkel/config.php"
 
 
-# - name: Move admin location
-#   command: mv {{ ansible_env.HOME }}/public_html/winkel/admin {{ ansible_env.HOME }}/public_html/winkel/{{ shop_admin_location }}
+- name: Download vQmod
+  unarchive:
+    src="{{ vqmod_url }}"
+    dest={{ ansible_env.HOME }}/public_html/winkel/
+    copy=no
+    creates={{ ansible_env.HOME }}/public_html/winkel/{{ vqmod_dir }}
+    mode=0770
+
+- name: Move admin location
+  command: mv {{ ansible_env.HOME }}/public_html/winkel/admin {{ ansible_env.HOME }}/public_html/winkel/{{ shop_admin_location }}
+
+- name: Delete the install directory
+  file:
+    path={{ ansible_env.HOME }}/public_html/winkel/install
+    state=absent

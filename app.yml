@@ -7,6 +7,8 @@
     user: modelbrouw
     opencart_url: "https://www.opencart.com/index.php?route=download/download/download&download_id=31"
     opencart_dir: opencart-1.5.5.1
+    vqmod_url: "https://github.com/vqmod/vqmod/releases/download/v2.6.1-opencart/vqmod-2.6.1-opencart.zip"
+    vqmod_dir: vqmod
     server:
       name: modelbrouwers.nl
       aliases:
