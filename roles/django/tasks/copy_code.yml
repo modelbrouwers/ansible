@@ -13,7 +13,7 @@
 - name: Remove *.pyc files
   shell: find . -name '*.pyc' -exec rm {} \;
   args:
-    chdir: "{{ project_home }}"
+    chdir: "{{ project_home }}/src"
 
 - name: Ensure log dir exists
   file: path={{ project_home }}/log state=directory
