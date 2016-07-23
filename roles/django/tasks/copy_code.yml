@@ -10,6 +10,11 @@
   notify:
     - restart uwsgi
 
+- name: Remove *.pyc files
+  shell: find . -name '*.pyc' -exec rm {} \;
+  args:
+    chdir: "{{ project_home }}"
+
 - name: Ensure log dir exists
   file: path={{ project_home }}/log state=directory
 
