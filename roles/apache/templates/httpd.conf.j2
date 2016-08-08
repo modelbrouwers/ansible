@@ -3,6 +3,7 @@
 <VirtualHost 127.0.0.1:8080 >
 
     <Directory {{ ansible_env.HOME }}/public_html>
+        AllowOverride All
         SetEnv STATIC_URL /static/
         SetEnv DEBUG 0
         SetEnv KEY_PREFIX production
