@@ -1,0 +1,14 @@
+---
+
+- name: Clone extensions repository
+  git: repo="{{ opencart_extensions_repo }}"
+       dest="{{ ansible_env.HOME }}/opencart-extensions"
+       version=1.0
+       accept_hostkey=yes
+  register: extensions_clone
+
+- name: Run the extensions installer
+  command: bash install_all.sh {{ shop_path }}
+  args:
+    chdir: "{{ ansible_env.HOME }}/opencart-extensions"
+  when: extensions_clone.changed

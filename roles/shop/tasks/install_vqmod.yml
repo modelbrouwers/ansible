@@ -1,0 +1,24 @@
+---
+
+- name: stat 'vqmod' folder
+  stat: path={{ shop_path }}/vqmod
+  register: stat_vqmod
+
+- name: Download vQmod
+  unarchive:
+    src="{{ vqmod_url }}"
+    dest={{ shop_path }}
+    copy=no
+    creates={{ shop_path }}/{{ vqmod_dir }}
+    mode=0770
+  when: not stat_vqmod.stat.exists
+
+- name: Move admin location
+  command: mv {{ shop_path }}/admin {{ shop_path }}/{{ shop_admin_location }}
+  when: not stat_vqmod.stat.exists
+
+- name: Delete the install directory
+  file:
+    path={{ shop_path }}/install
+    state=absent
+  when: not stat_vqmod.stat.exists

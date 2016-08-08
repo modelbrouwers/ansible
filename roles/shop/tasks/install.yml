@@ -14,7 +14,7 @@
   file: dest={{ ansible_env.HOME }}/public_html/ state=directory mode=0750
 
 - name: stat 'winkel' folder
-  stat: path={{ ansible_env.HOME }}/public_html/winkel/
+  stat: path={{ shop_path }}/
   register: stat_winkel
 
 - name: Move shop to public_html
@@ -28,12 +28,13 @@
 
 - name: Set group-write permissions on the required folders
   file:
-    path={{ ansible_env.HOME }}/public_html/winkel/{{ item }}
+    path={{ shop_path }}/{{ item }}
     state=directory
     mode=0770
     recurse=yes
   with_items:
     - image
+  when: not stat_winkel.stat.exists
 
 - name: Create database user for the shop
   mysql_user:
@@ -53,7 +54,7 @@
 
 - name: Ensure the config files are touched
   file:
-    dest={{ ansible_env.HOME }}/public_html/winkel/{{ item.dest }}
+    dest={{ shop_path }}/{{ item.dest }}
     state={{ item.state }}
     owner={{ user }}
     group={{ user }}
@@ -63,6 +64,7 @@
     - {dest: config-dist.php, state: absent}
     - {dest: admin/config.php, state: file}
     - {dest: admin/config-dist.php, state: absent}
+  when: not stat_winkel.stat.exists
 
 # - name: Run the CLI installer
 #   command:
@@ -76,22 +78,6 @@
 #                                  --agree_tnc yes \
 #                                  --http_server https://modelbrouwers.nl/winkel
 #   args:
-#     chdir: "{{ ansible_env.HOME }}/public_html/winkel/install"
-#     # creates: "{{ ansible_env.HOME }}/public_html/winkel/config.php"
-
-
-- name: Download vQmod
-  unarchive:
-    src="{{ vqmod_url }}"
-    dest={{ ansible_env.HOME }}/public_html/winkel/
-    copy=no
-    creates={{ ansible_env.HOME }}/public_html/winkel/{{ vqmod_dir }}
-    mode=0770
-
-- name: Move admin location
-  command: mv {{ ansible_env.HOME }}/public_html/winkel/admin {{ ansible_env.HOME }}/public_html/winkel/{{ shop_admin_location }}
-
-- name: Delete the install directory
-  file:
-    path={{ ansible_env.HOME }}/public_html/winkel/install
-    state=absent
+#     chdir: "{{ shop_path }}/install"
+#     # creates: "{{ shop_path }}/config.php"
+#   when: not stat_winkel.stat.exists

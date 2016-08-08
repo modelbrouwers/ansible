@@ -11,3 +11,5 @@
 - include: webservers.yml
 - include: caches.yml
 - include: php.yml
+
+- include: vcs.yml

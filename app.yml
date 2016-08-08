@@ -9,6 +9,7 @@
     opencart_dir: opencart-1.5.5.1
     vqmod_url: "https://github.com/vqmod/vqmod/releases/download/v2.6.1-opencart/vqmod-2.6.1-opencart.zip"
     vqmod_dir: vqmod
+    opencart_extensions_repo: "ssh://git@bitbucket.org/modelbrouwers/opencart-extensions.git"
     server:
       name: modelbrouwers.nl
       aliases:
@@ -19,6 +20,6 @@
       port: 8002
     home_ip: 163.158.222.105
   roles:
-    - apache
-    - nginx
+    # - apache
+    # - nginx
     - shop
