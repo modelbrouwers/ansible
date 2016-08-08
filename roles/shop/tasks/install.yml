@@ -81,3 +81,6 @@
 #     chdir: "{{ shop_path }}/install"
 #     # creates: "{{ shop_path }}/config.php"
 #   when: not stat_winkel.stat.exists
+
+- name: Ensure the correct .htaccess config is in place
+  template: src=htaccess.j2 dest={{ shop_path }}/.htaccess

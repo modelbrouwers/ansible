@@ -21,6 +21,7 @@
     - headers.load
     - php5.load
     - php5.conf
+    - rewrite.load  # required for the shop
   remote_user: root
   notify:
     - reload apache
