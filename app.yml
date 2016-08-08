@@ -14,12 +14,13 @@
       name: modelbrouwers.nl
       aliases:
         - new.modelbrouwers.nl
+        - "{{ new_server_ip }}"
         # - www.modelbrouwers.nl
         # - shop.modelbrouwers.nl
     uwsgi:
       port: 8002
     home_ip: 163.158.222.105
   roles:
-    # - apache
-    # - nginx
+    - apache
+    - nginx
     - shop
