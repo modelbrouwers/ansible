@@ -1,10 +1,16 @@
 ---
 # Make sure the virtualenv is created and requirements are installed
 
+- name: Upgrade pip
+  pip: virtualenv={{ venv }}
+       name=pip
+       state=latest
+       virtualenv_python=python2
+
 - name: Install requirements
   pip: virtualenv={{ venv }}
        chdir={{ project_home }}
-       requirements=requirements/base.txt
-       virtualenv_command={{ venv_command }}
-  notify:
-    - restart uwsgi
+       requirements=requirements/{{ env }}.txt
+       virtualenv_python=python2
+  # notify:
+  #   - restart uwsgi

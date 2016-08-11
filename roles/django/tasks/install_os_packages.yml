@@ -1,0 +1,17 @@
+---
+
+# Installs the required OS packages for the Django stack
+
+- name: Install the required OS packages for the Django stack
+  package: name="{{ item }}" state=present
+  with_items:
+    - python-virtualenv
+    - virtualenvwrapper
+    - libcairo2
+    - libpango1.0-0
+    - libgdk-pixbuf2.0-0
+    - shared-mime-info
+    - libffi-dev
+    - libxml2-dev
+    - libxslt-dev
+  remote_user: root

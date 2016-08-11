@@ -13,3 +13,4 @@
 - include: php.yml
 
 - include: vcs.yml
+- include: build-tools.yml

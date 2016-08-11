@@ -1,0 +1,6 @@
+---
+
+- name: Install OS build tools
+  package: name={{ item }}
+  with_items:
+    - build-essential
