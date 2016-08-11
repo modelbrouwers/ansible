@@ -7,6 +7,9 @@
        state=latest
        virtualenv_python=python2
 
+- name: Set up virtualenvwrapper post-activate hook
+  template: src=postactivate.j2 dest="{{ venv }}/bin/postactivate"
+
 - name: Install requirements
   pip: virtualenv={{ venv }}
        chdir={{ project_home }}

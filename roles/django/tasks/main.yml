@@ -5,6 +5,7 @@
 - include: checkout_code.yml
 - include: dependencies.yml
 - include: db.yml
+- include: secrets.yml
 # - include: migrate.yml
 # - include: frontend.yml
 # - include: collectstatic.yml
