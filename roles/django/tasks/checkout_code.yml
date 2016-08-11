@@ -8,7 +8,7 @@
        force=yes
        depth=1
        accept_hostkey=yes
-       refspec="refs/heads/*:refs/remotes/origin/*"
+       # refspec="refs/heads/*:refs/remotes/origin/*"
   # notify:
     # - restart uwsgi
 

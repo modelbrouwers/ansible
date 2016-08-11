@@ -1,6 +1,8 @@
 ---
 # Set up the base system: security settings, basic system packages...
 
+- include: build-tools.yml
+
 - include: auto-updates.yml
 - include: firewall.yml
 - include: fail2ban.yml
@@ -13,4 +15,3 @@
 - include: php.yml
 
 - include: vcs.yml
-- include: build-tools.yml
