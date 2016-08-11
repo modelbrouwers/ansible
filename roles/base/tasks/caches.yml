@@ -5,6 +5,7 @@
   with_items:
     - redis-server
     - memcached
+    - libmemcached-tools
 
 - name: Ensure redis only listens on localhost
   lineinfile:
