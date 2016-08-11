@@ -7,6 +7,7 @@
     user: modelbrouw
     env: production
 
+    docroot: "{{ ansible_env.HOME }}/public_html"
     opencart_url: "https://www.opencart.com/index.php?route=download/download/download&download_id=31"
     opencart_dir: opencart-1.5.5.1
     vqmod_url: "https://github.com/vqmod/vqmod/releases/download/v2.6.1-opencart/vqmod-2.6.1-opencart.zip"
@@ -20,12 +21,17 @@
         - "{{ new_server_ip }}"
         # - www.modelbrouwers.nl
         # - shop.modelbrouwers.nl
+
     uwsgi:
       port: 8002
+
     home_ip: 163.158.222.105
+
   roles:
-    # - apache
-    # - nginx
-    # - shop
+    - apache
+    - nginx
+    - shop
+    - maintenance_on
     - django
+    - maintenance_off
   become_method: su
