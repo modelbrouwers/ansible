@@ -28,3 +28,4 @@
     # - nginx
     # - shop
     - django
+  become_method: su
