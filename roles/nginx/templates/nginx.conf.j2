@@ -1,8 +1,8 @@
 # Root and www
 
-# upstream production_django {
-#     server 127.0.0.1:{{ uwsgi.port }};
-# }
+upstream production_django {
+    server 127.0.0.1:{{ uwsgi.port }};
+}
 
 server {
     listen 80;
@@ -52,66 +52,66 @@ server {
 
         proxy_intercept_errors on;
         recursive_error_pages on;
-        # error_page 403 = @django;
-        # error_page 404 = @django;
-        # error_page 405 = @django;
+        error_page 403 = @django;
+        error_page 404 = @django;
+        error_page 405 = @django;
     }
 
-    # location @django {
-    #     uwsgi_pass production_django;
-    #     include uwsgi_params;
-    # }
+    location @django {
+        uwsgi_pass production_django;
+        include uwsgi_params;
+    }
 
-    # location /favicon.ico {
-    #     alias {{ ansible_env.HOME }}/public_html/favicon.ico;
-    #     expires max;
-    # }
+    location /favicon.ico {
+        alias {{ ansible_env.HOME }}/public_html/favicon.ico;
+        expires max;
+    }
 
-    # location /static/ {
-    #     expires max;
-    #     root {{ ansible_env.HOME }}/django/production;
-    #     access_log  /var/log/nginx/static.modelbrouwers.nl.access.log;
-    # }
+    location /static/ {
+        expires max;
+        root {{ ansible_env.HOME }}/django/production;
+        access_log  /var/log/nginx/modelbrouw/static.modelbrouwers.nl.access.log;
+    }
 
-    # location /media/ {
-    #     expires 30d;
-    #     root {{ ansible_env.HOME }}/django/production;
-    #     access_log  /var/log/nginx/media.modelbrouwers.nl.access.log;
-    # }
+    location /media/ {
+        expires 30d;
+        root {{ ansible_env.HOME }}/django/production;
+        access_log  /var/log/nginx/modelbrouw/media.modelbrouwers.nl.access.log;
+    }
 
-    # location /protected/ {
-    #     internal;
-    #     alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
-    # }
+    location /protected/ {
+        internal;
+        alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
+    }
 
-    # location /shop/catalog/images/ {
-    #     expires max;
-    # }
+    location /shop/catalog/images/ {
+        expires max;
+    }
 
-    # location /catalog/images/ {
-    #     expires max;
-    #     root {{ ansible_env.HOME }}/public_html/shop;
-    # }
+    location /catalog/images/ {
+        expires max;
+        root {{ ansible_env.HOME }}/public_html/shop;
+    }
 
-    # location /winkel/images/ {
-    #     expires max;
-    # }
+    location /winkel/images/ {
+        expires max;
+    }
 
-    # location /winkel/image/ {
-    #     expires max;
-    # }
+    location /winkel/image/ {
+        expires max;
+    }
 
-    # location /phpBB3/images/ {
-    #     expires max;
-    # }
+    location /phpBB3/images/ {
+        expires max;
+    }
 
-    # location /phpBB3/styles/ {
-    #     expires max;
-    # }
+    location /phpBB3/styles/ {
+        expires max;
+    }
 
-    # location /albums/coppermine/albums/ {
-    #     expires max;
-    # }
+    location /albums/coppermine/albums/ {
+        expires max;
+    }
 
     error_page 503 @maintenance;
     location @maintenance {
