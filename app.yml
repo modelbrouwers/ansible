@@ -33,5 +33,6 @@
     - shop
     - maintenance_on
     - django
+    - supervisor
     - maintenance_off
   become_method: su

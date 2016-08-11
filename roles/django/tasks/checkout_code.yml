@@ -9,8 +9,8 @@
        depth=1
        accept_hostkey=yes
        # refspec="refs/heads/*:refs/remotes/origin/*"
-  # notify:
-    # - restart uwsgi
+  notify:
+    - restart uwsgi
 
 - name: Ensure log dir exists
   file: path={{ project_home }}/log state=directory

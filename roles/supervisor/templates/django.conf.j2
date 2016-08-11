@@ -1,0 +1,19 @@
+[supervisord]
+environment =
+    LANG=en_US.UTF-8,
+    LC_ALL=en_US.UTF-8,
+    LC_LANG=en_US.UTF-8
+
+[program:uwsgi-brouwers-{{ env }}]
+user = {{ user }}
+command = {{ ansible_env.HOME }}/.virtualenvs/{{ env }}/bin/uwsgi --ini {{ ansible_env.HOME }}/django/{{ env }}/src/conf/uwsgi.ini
+autostart = true
+autorestart = true
+stderr_logfile = {{ ansible_env.HOME }}/django/{{ env }}/log/uwsgi_err.log
+stdout_logfile = {{ ansible_env.HOME }}/django/{{ env }}/log/uwsgi_out.log
+stopsignal = QUIT
+environment =
+    DJANGO_SETTINGS_MODULE=conf.settings.{{ env }},
+    VIRTUAL_ENV={{ ansible_env.HOME }}/.virtualenvs/{{ env }},
+    PROJECT_ROOT={{ ansible_env.HOME }}/django/{{ env }},
+    PROJECT_PORT={{ uwsgi.port }}
