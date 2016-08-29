@@ -1,0 +1,16 @@
+---
+
+- name: Symlink auth plugin
+  file:
+    src={{ django_src }}/src/phpbb/phpBB3/includes/auth/{{ item }}
+    dest={{ forum_path }}/includes/auth/{{ item }}
+    state=link
+  with_items:
+    - getdjangouser.php
+    - auth_django.php
+
+- name: Set up custom styles
+  file:
+    src={{ django_src }}/src/phpbb/phpBB3/styles/subsilver2_dead_topics
+    dest={{ forum_path }}/styles/subsilver2_dead_topics
+    state=link

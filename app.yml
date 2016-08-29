@@ -14,6 +14,8 @@
     vqmod_dir: vqmod
     opencart_extensions_repo: "ssh://git@bitbucket.org/modelbrouwers/opencart-extensions.git"
 
+    phpbb_url: "https://www.phpbb.com/files/release/phpBB-3.0.14.zip"
+
     server:
       name: modelbrouwers.nl
       aliases:
@@ -33,6 +35,7 @@
     - shop
     - maintenance_on
     - django
+    - forum
     - supervisor
     - maintenance_off
   become_method: su
