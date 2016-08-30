@@ -43,6 +43,7 @@
     - files
     - store
     - images
+    - static
   when: not stat_forum.stat.exists
 
 - name: Create database user for the forum
