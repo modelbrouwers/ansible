@@ -11,3 +11,17 @@
     - php5-curl
     - php5-gd
     - php5-imagick
+    - php5-memcached
+
+- name: Check if composer is installed
+  stat: path=/usr/local/bin/composer
+  register: stat_composer
+
+- name: Copy composer install script
+  copy: src=php/install_composer.sh dest=/root
+  when: not stat_composer.stat.exists
+
+- name: Install composer
+  command: sh /root/install_composer.sh
+  when: not stat_composer.stat.exists
+
