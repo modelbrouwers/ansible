@@ -2,4 +2,4 @@
 # Handlers to be run on notify
 
 - name: restart uwsgi
-  supervisorctl: name=uwsgi-brouwers-{{ deploy_env }} state=restarted
+  supervisorctl: name=uwsgi-brouwers-{{ env }} state=restarted

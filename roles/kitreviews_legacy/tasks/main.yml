@@ -1,0 +1,17 @@
+---
+
+- name: Create database user for the legacy kitreviews
+  mysql_user:
+    name="{{ kitreviews_db.user }}"
+    password="{{ kitreviews_db.password }}"
+    host=localhost
+    state=present
+  remote_user: root
+
+- name: Create database for the legacy kitreviews
+  mysql_db: name="{{ kitreviews_db.name }}" state=present
+  remote_user: root
+
+- name: Grant db user privileges
+  mysql_user: name="{{ kitreviews_db.user }}" priv="{{ kitreviews_db.name }}.*:ALL"
+  remote_user: root

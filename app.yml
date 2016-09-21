@@ -33,6 +33,7 @@
   roles:
     - apache
     - nginx
+    - kitreviews_legacy
     - shop
     - maintenance_on
     - django
