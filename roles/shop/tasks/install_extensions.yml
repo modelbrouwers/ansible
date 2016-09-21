@@ -3,7 +3,7 @@
 - name: Clone extensions repository
   git: repo="{{ opencart_extensions_repo }}"
        dest="{{ ansible_env.HOME }}/opencart-extensions"
-       version=1.0
+       version=1.0.1
        accept_hostkey=yes
   register: extensions_clone
 
@@ -12,3 +12,18 @@
   args:
     chdir: "{{ ansible_env.HOME }}/opencart-extensions"
   when: extensions_clone.changed
+
+- name: Set group-write permissions on the base directories (TicketFactory)
+  file:
+    path={{ shop_path }}/{{ item }}
+    state=directory
+    mode=0770
+  with_items:
+    - achterdeur
+    - catalog
+
+- name: Symlink site-wide header
+  file:
+    src={{ django_root }}/src/templates/php_templates/top.php
+    dest={{ shop_path }}/catalog/view/theme/default/template/common/top.php
+    state=link

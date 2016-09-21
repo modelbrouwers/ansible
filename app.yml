@@ -24,6 +24,7 @@
         # - www.modelbrouwers.nl
         # - shop.modelbrouwers.nl
 
+    django_root: "{{ ansible_env.HOME }}/django/{{ env }}"
     uwsgi:
       port: 8002
 

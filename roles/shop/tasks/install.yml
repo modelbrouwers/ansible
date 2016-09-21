@@ -36,15 +36,6 @@
     - image
   when: not stat_winkel.stat.exists
 
-- name: Set group-write permissions on the base directories (TicketFactory)
-  file:
-    path={{ shop_path }}/{{ item }}
-    state=directory
-    mode=0770
-  with_items:
-    - achterdeur
-    - catalog
-
 - name: Create database user for the shop
   mysql_user:
     name="{{ shop_db.user }}"
