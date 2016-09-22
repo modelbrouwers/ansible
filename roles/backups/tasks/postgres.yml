@@ -1,0 +1,41 @@
+---
+
+# TODO: replace with barman
+
+- name: Create postgres backup user
+  postgresql_user: name="{{ db_backups.user }}" password="{{ db_backups.password }}"
+  become: yes
+  become_user: postgres
+  remote_user: root
+
+- name: Grant postgres backup user privileges
+  postgresql_privs: >
+      database="{{ django_db.name }}"
+      role="{{ db_backups.user }}"
+      type="{{ item }}"
+      objs=ALL_IN_SCHEMA
+      privs=SELECT
+  with_items:
+    - table
+    - sequence
+  become: yes
+  become_user: postgres
+  remote_user: root
+
+- name: Install postgres backup script
+  copy:
+    src=pg_backup_rotated.sh
+    dest="{{ backups_dir }}/pg_backup_rotated.sh"
+    mode=0700
+
+- name: Install postgres backup config
+  template:
+    src=pg_backup.config.j2
+    dest="{{ backups_dir }}/pg_backup.config"
+    mode=0600
+
+- name: Install postgres backup cronjob
+  cron: name="postgres backup"
+        minute=50
+        hour=1
+        job="bash {{ backups_dir }}/pg_backup_rotated.sh"

@@ -1,10 +1,6 @@
 ---
 
-- name: Ensure backups directory exists
-  file: path="{{ item }}" state=directory mode=0700
-  with_items:
-    - "{{ backups_dir }}"
-    - "{{ backups_dir }}/mysql"
-    - "{{ backups_dir }}/postgres"
-
+- include: common.yml
 - include: mysql.yml
+- include: postgres.yml
+- include: transfer_backups.yml

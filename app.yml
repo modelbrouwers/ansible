@@ -32,13 +32,13 @@
 
   roles:
     - backups
-    # - apache
-    # - nginx
-    # - kitreviews_legacy
-    # - shop
-    # - maintenance_on
-    # - django
-    # - forum
-    # - supervisor
-    # - maintenance_off
+    - apache
+    - nginx
+    - kitreviews_legacy
+    - shop
+    - maintenance_on
+    - django
+    - forum
+    - supervisor
+    - maintenance_off
   become_method: su
