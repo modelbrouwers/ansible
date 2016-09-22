@@ -31,13 +31,14 @@
     home_ip: 163.158.222.105
 
   roles:
-    - apache
-    - nginx
-    - kitreviews_legacy
-    - shop
-    - maintenance_on
-    - django
-    - forum
-    - supervisor
-    - maintenance_off
+    - backups
+    # - apache
+    # - nginx
+    # - kitreviews_legacy
+    # - shop
+    # - maintenance_on
+    # - django
+    # - forum
+    # - supervisor
+    # - maintenance_off
   become_method: su

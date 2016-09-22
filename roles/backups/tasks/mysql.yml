@@ -1,0 +1,38 @@
+---
+
+- name: Create mysql backup user
+  mysql_user:
+    name="{{ db_backups.user }}"
+    password="{{ db_backups.password }}"
+    host=localhost
+    state=present
+  remote_user: root
+
+- name: Grant mysql backup user privileges
+  mysql_user:
+    name="{{ db_backups.user }}"
+    priv="{{ item }}.*:{{ mysql_dump_privs }}"
+    append_privs=yes
+  remote_user: root
+  with_items:
+    - "{{ shop_db.name }}"
+    - "{{ forum_db.name }}"
+    - "{{ kitreviews_db.name }}"
+
+- name: Install mysql backup script
+  copy:
+    src=mysql_backup_rotated.sh
+    dest="{{ backups_dir }}/mysql_backup_rotated.sh"
+    mode=0700
+
+- name: Install mysql backup config
+  template:
+    src=mysql_backup.config.j2
+    dest="{{ backups_dir }}/mysql_backup.config"
+    mode=0600
+
+- name: Install mysql backup cronjob
+  cron: name="mysql backup"
+        minute=0
+        hour=2
+        job="bash {{ backups_dir }}/mysql_backup_rotated.sh"
