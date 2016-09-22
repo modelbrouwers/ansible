@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# get the generic backup functions
+source {{ backups_dir }}/incremental_backup.sh
+
+# define the input variables
+src={{ forum_path }}/images
+target={{ backups_dir }}/forum/
+
+# run the actual backup
+run_backup "forum images" $src $target

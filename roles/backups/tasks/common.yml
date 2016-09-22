@@ -6,3 +6,5 @@
     - "{{ backups_dir }}"
     - "{{ backups_dir }}/mysql"
     - "{{ backups_dir }}/postgres"
+    - "{{ backups_dir }}/shop"
+    - "{{ backups_dir }}/forum"
