@@ -1,0 +1,12 @@
+---
+
+- name: Configure the backups
+  hosts: new
+  remote_user: modelbrouw
+  vars:
+    user: modelbrouw
+    env: production
+    django_root: "{{ ansible_env.HOME }}/django/{{ env }}"
+  roles:
+    - backups
+  become_method: su

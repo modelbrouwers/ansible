@@ -31,7 +31,6 @@
     home_ip: 163.158.222.105
 
   roles:
-    - backups
     - apache
     - nginx
     - kitreviews_legacy
