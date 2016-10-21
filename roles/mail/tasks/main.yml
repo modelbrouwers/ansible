@@ -1,0 +1,26 @@
+---
+
+- name: Set Postfix option type as internet site
+  debconf:
+    name=postfix
+    question="postfix/main_mailer_type"
+    value="'Internet Site'"
+    vtype="string"
+
+- name: Set Postfix option hostname
+  debconf:
+    name=postifx
+    question="postfix/mailname"
+    value="modelbrouwers.nl"
+    vtype="string"
+
+- name: Install postfix
+  package: name="{{ item }}"
+  with_items:
+    - mailutils
+    - postfix
+
+- name: Install configuration
+  template: src=main.cf.j2 dest=/etc/postfix/main.cf
+  notify:
+    - restart postfix
