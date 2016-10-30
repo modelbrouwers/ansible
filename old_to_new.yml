@@ -36,5 +36,9 @@
       delegate_to: modelbrouwers.nl
       with_items:
         - public_html/phpBB3/images
-        - public_html/winkel/image/
-        # - django/production/media/
+        - public_html/winkel/image
+        - django/production/media
+
+    - name: Sync media folder
+      synchronize: src=/home/modelbrouw/django/production/media/ dest=/home/modelbrouw/{{ item }}
+      delegate_to: modelbrouwers.nl

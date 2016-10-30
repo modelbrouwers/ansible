@@ -8,5 +8,6 @@
 - include: secrets.yml
 - include: migrate.yml
 - include: frontend.yml
+- include: media.yml
 - include: collectstatic.yml
 - include: cronjobs.yml
