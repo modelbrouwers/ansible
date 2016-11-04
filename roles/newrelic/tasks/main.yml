@@ -1,0 +1,18 @@
+---
+
+- name: Add apt-key for new relic
+  apt_key: url=https://download.newrelic.com/548C16BF.gpg
+
+- name: Add newrelic apt sources
+  apt_repository: repo='deb http://apt.newrelic.com/debian/ newrelic non-free' state=present filename='newrelic'
+
+- name: Install newrelic package
+  package: name="newrelic-sysmond" state=present
+  notify:
+    - start newrelic
+
+- name: Enter license key
+  lineinfile:
+    dest=/etc/newrelic/nrsysmond.cfg
+    regexp=^license_key=
+    line="license_key={{ newrelic_license_key }}"
