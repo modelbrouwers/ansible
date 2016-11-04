@@ -52,3 +52,5 @@ docs/_build/
 
 # PyBuilder
 target/
+
+.vault_pass.txt
