@@ -1,7 +1,7 @@
 ---
 
 - name: Create database backups
-  hosts: web
+  hosts: old
   remote_user: root
   tasks:
     - name: Backup postgres database
@@ -25,7 +25,7 @@
   tasks:
     - name: Transfer the backup files
       synchronize: src=/tmp/{{ item }} dest=/tmp/{{ item }}
-      delegate_to: modelbrouwers.nl
+      delegate_to: old.modelbrouwers.nl
       with_items:
         - modelbrouwers.custom
         - modelbrouw_fora.sql
@@ -33,14 +33,14 @@
 
     - name: Copy the uploaded files from old to new
       synchronize: src=/home/modelbrouw/{{ item }}/ dest=/home/modelbrouw/{{ item }}
-      delegate_to: modelbrouwers.nl
+      delegate_to: old.modelbrouwers.nl
       with_items:
         - public_html/phpBB3/images
         - public_html/winkel/image
 
     # - name: Sync media folder
     #   synchronize: src=/home/modelbrouw/django/production/media/ dest=/home/modelbrouw/django/production/media
-    #   delegate_to: modelbrouwers.nl
+    #   delegate_to: old.modelbrouwers.nl
 
 
 - name: Restore database backups
@@ -48,13 +48,13 @@
   remote_user: modelbrouw
 
   tasks:
-    # - name: Restore MySQL databases
-    #   mysql_db:
-    #     name={{ item.name }} state=import target=/tmp/{{ item.name }}.sql
-    #     login_user={{ item.user }} login_password={{ item.password }}
-    #   with_items:
-    #     - "{{ shop_db }}"
-    #     - "{{ forum_db }}"
+    - name: Restore MySQL databases
+      mysql_db:
+        name={{ item.name }} state=import target=/tmp/{{ item.name }}.sql
+        login_user={{ item.user }} login_password={{ item.password }}
+      with_items:
+        - "{{ shop_db }}"
+        - "{{ forum_db }}"
 
     - name: Ensure postgres db is dropped before restore
       postgresql_db: name="{{ django_db.name }}" state=absent
