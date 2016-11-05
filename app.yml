@@ -21,7 +21,6 @@
       aliases:
         - www.modelbrouwers.nl
         - shop.modelbrouwers.nl
-        - new.modelbrouwers.nl
         - "{{ new_server_ip }}"
 
     django_root: "{{ ansible_env.HOME }}/django/{{ env }}"
