@@ -1,0 +1,27 @@
+---
+
+- name: Update the Modelbrouwers.nl nginx config
+  hosts: new
+  remote_user: modelbrouw
+  vars:
+    user: modelbrouw
+    env: production
+
+    docroot: "{{ ansible_env.HOME }}/public_html"
+
+    server:
+      name: modelbrouwers.nl
+      aliases:
+        - www.modelbrouwers.nl
+        - shop.modelbrouwers.nl
+        - "{{ new_server_ip }}"
+
+    django_root: "{{ ansible_env.HOME }}/django/{{ env }}"
+    uwsgi:
+      port: 8002
+
+    home_ip: 163.158.222.105
+
+  roles:
+    - nginx
+  become_method: su

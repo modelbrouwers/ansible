@@ -1,0 +1,17 @@
+---
+
+# Set up the Postgres database for the Django app
+
+- name: Create Django Postgres role
+  postgresql_user: name="{{ django_db.user }}" password="{{ django_db.password }}"
+  become: yes
+  become_user: postgres
+  remote_user: root
+
+- name: Create Django Postgres db
+  postgresql_db: name="{{ django_db.name }}"
+                 encoding="UTF-8"
+                 owner="{{ django_db.user }}"
+  become: yes
+  become_user: postgres
+  remote_user: root

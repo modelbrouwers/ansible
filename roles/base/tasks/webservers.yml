@@ -1,0 +1,28 @@
+---
+
+- name: Install Apache to listen on localhost
+  apt: name=apache2 state=present
+
+- name: Disable the default site
+  file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+  notify:
+    - reload apache
+
+- name: Don't listen on ports 80 and 443
+  copy: src=apache/ports.conf dest=/etc/apache2/ports.conf
+  notify:
+    - reload apache
+
+
+- name: Install nginx
+  apt: name=nginx state=present
+
+- name: Set main config files
+  copy: src=nginx/{{ item }}
+        dest=/etc/nginx/{{ item }}
+  notify:
+    - restart nginx
+  with_items:
+    - nginx.conf
+    - conf.d/client_body.conf
+    - conf.d/proxy.conf

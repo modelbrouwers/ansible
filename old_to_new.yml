@@ -1,0 +1,76 @@
+---
+
+- name: Create database backups
+  hosts: old
+  remote_user: root
+  tasks:
+    - name: Backup postgres database
+      command: pg_dump -F c -f /tmp/modelbrouwers.custom modelbrouwers
+      become: yes
+      become_user: postgres
+
+    - name: Backup MySQL databases
+      mysql_db:
+        state=dump name={{ item }} target=/tmp/{{ item }}.sql
+        login_user={{ mysql_user }} login_password={{ mysql_password }}
+      with_items:
+        - modelbrouw_fora
+        - modelbrouw_winkl
+
+
+
+- name: Transfer the (old) production data to the new server
+  hosts: new
+  remote_user: modelbrouw
+  tasks:
+    - name: Transfer the backup files
+      synchronize: src=/tmp/{{ item }} dest=/tmp/{{ item }}
+      delegate_to: old.modelbrouwers.nl
+      with_items:
+        - modelbrouwers.custom
+        - modelbrouw_fora.sql
+        - modelbrouw_winkl.sql
+
+    - name: Copy the uploaded files from old to new
+      synchronize: src=/home/modelbrouw/{{ item }}/ dest=/home/modelbrouw/{{ item }}
+      delegate_to: old.modelbrouwers.nl
+      with_items:
+        - public_html/phpBB3/images
+        - public_html/winkel/image
+
+    # - name: Sync media folder
+    #   synchronize: src=/home/modelbrouw/django/production/media/ dest=/home/modelbrouw/django/production/media
+    #   delegate_to: old.modelbrouwers.nl
+
+
+- name: Restore database backups
+  hosts: new
+  remote_user: modelbrouw
+
+  tasks:
+    - name: Restore MySQL databases
+      mysql_db:
+        name={{ item.name }} state=import target=/tmp/{{ item.name }}.sql
+        login_user={{ item.user }} login_password={{ item.password }}
+      with_items:
+        - "{{ shop_db }}"
+        - "{{ forum_db }}"
+
+    - name: Ensure postgres db is dropped before restore
+      postgresql_db: name="{{ django_db.name }}" state=absent
+      become: yes
+      become_user: postgres
+      become_method: su
+      remote_user: root
+
+    - name: Create Django Postgres db
+      postgresql_db: name="{{ django_db.name }}"
+                     encoding="UTF-8"
+                     owner="{{ django_db.user }}"
+      become: yes
+      become_user: postgres
+      become_method: su
+      remote_user: root
+
+    - name: Load postgres backup
+      shell: PGPASSWORD="{{ django_db.password }}" pg_restore -U {{ django_db.user }} -d {{ django_db.name }} -n public /tmp/modelbrouwers.custom

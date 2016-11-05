@@ -1,0 +1,14 @@
+---
+
+- name: Install backup transfer script (rsync)
+  template:
+    src=rsync_backups.sh.j2
+    dest="{{ backups_dir }}/rsync_backups.sh"
+    mode=0700
+
+# TODO: automate transfering the public key to the backup server
+- name: Install backup transfer cronjob
+  cron: name="rsync backup to remote"
+        minute=0
+        hour=3
+        job="bash {{ backups_dir }}/rsync_backups.sh"

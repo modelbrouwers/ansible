@@ -1,0 +1,3 @@
+---
+
+shop_path: "{{ ansible_env.HOME }}/public_html/winkel"

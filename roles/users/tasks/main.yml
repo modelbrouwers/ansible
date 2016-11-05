@@ -1,0 +1,19 @@
+---
+
+- name: Create the user-named goup(s)
+  group: name="{{ item }}" state="present"
+  with_items: "{{ users }}"
+
+- name: Create the system user(s)
+  user:
+    name="{{ item }}"
+    generate_ssh_key=yes
+    group="{{ item }}"
+  with_items: "{{ users }}"
+
+- name: Copy authorized public keys
+  authorized_key: user={{ item[0] }}
+                  key="{{ lookup('file', 'files/pubkeys/' + item[1] + '.pub') }}"
+  with_nested:
+    - "{{ users }}"
+    - [ 'sergei' ]

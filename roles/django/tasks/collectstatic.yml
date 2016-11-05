@@ -1,7 +1,7 @@
 ---
 
 - name: Flush memcached
-  shell: memflush --servers=localhost:11211
+  shell: memcflush --servers=localhost:11211
 
 - name: Run collectstatic
   django_manage: app_path={{ project_home }}/src/
@@ -15,5 +15,3 @@
                  command=systemjs_bundle
                  settings={{ settings_module }}
                  virtualenv={{ venv }}
-  environment:
-    PATH: /opt/bin/:{{ ansible_env.PATH }}

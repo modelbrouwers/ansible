@@ -1,0 +1,33 @@
+---
+
+# Installs the required OS packages for the Django stack
+
+- name: Install the required OS packages for the Django stack
+  package: name="{{ item }}" state=present
+  with_items:
+    - python-virtualenv
+    - virtualenvwrapper
+    - libcairo2
+    - libpango1.0-0
+    - libgdk-pixbuf2.0-0
+    - shared-mime-info
+    - libffi-dev
+    - libxml2-dev
+    - libxslt-dev
+  remote_user: root
+
+
+# node_Release_file: https://deb.nodesource.com/node_6.x/dists/jessie/Release
+
+- name: Add apt-key for (recent) NodeJS
+  apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+  remote_user: root
+
+- name: Add NodeJS sources
+  copy: src=nodesource.list dest=/etc/apt/sources.list.d/nodesource.list
+        mode=u=rw,g=r,o=r
+  remote_user: root
+
+- name: Install NodeJS
+  package: name=nodejs state=present update_cache=yes
+  remote_user: root

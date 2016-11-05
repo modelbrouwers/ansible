@@ -1,0 +1,176 @@
+# Root and www
+
+upstream production_django {
+    server 127.0.0.1:{{ uwsgi.port }};
+}
+
+server {
+    listen 80;
+    server_name {{ server.name }}
+                {{ server.aliases|join(' ') }};
+    return 301 https://{{ server.name }}$request_uri;
+}
+
+server {
+    listen       443;
+    server_name {{ server.name }}
+                {{ server.aliases|join(' ') }};
+    error_log /var/log/nginx/{{ user }}/error.log warn;
+    access_log  /var/log/nginx/{{ user }}/access.log main;
+
+    charset utf-8;
+    root {{ docroot }};
+
+    ssl on;
+    ssl_certificate /etc/ssl/wildcard.{{ user }}.crt;
+    ssl_certificate_key /etc/ssl/{{ user }}.key;
+    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
+
+    # 180 days
+    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+
+    # gzip static files
+    gzip on;
+    gzip_min_length 1000;
+    gzip_types
+        text/css
+        text/plain
+        text/javascript
+        application/javascript
+        application/x-javascript
+        application/json;
+
+    set $maintenance off;
+    if (-f $document_root/maintenance.html ) {
+        set $maintenance on;
+    }
+    if ($remote_addr = "{{ home_ip }}") {
+        set $maintenance off;
+    }
+    if ($maintenance = on) {
+        return 503;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:8080;
+
+        proxy_intercept_errors on;
+        recursive_error_pages on;
+        error_page 403 = @django;
+        error_page 404 = @django;
+        error_page 405 = @django;
+    }
+
+    location @django {
+        uwsgi_pass production_django;
+        include uwsgi_params;
+    }
+
+    location /favicon.ico {
+        alias {{ docroot }}/favicon.ico;
+        expires max;
+    }
+
+    location /static/ {
+        expires max;
+        root {{ ansible_env.HOME }}/django/production;
+        access_log  /var/log/nginx/modelbrouw/static.modelbrouwers.nl.access.log;
+    }
+
+    location /media/ {
+        expires 30d;
+        root {{ ansible_env.HOME }}/django/production;
+        access_log  /var/log/nginx/modelbrouw/media.modelbrouwers.nl.access.log;
+    }
+
+    location /protected/ {
+        internal;
+        alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
+    }
+
+    location /shop/catalog/images/ {
+        expires max;
+    }
+
+    location /catalog/images/ {
+        expires max;
+        root {{ docroot }}/shop;
+    }
+
+    location /winkel/images/ {
+        expires max;
+    }
+
+    location /winkel/image/ {
+        expires max;
+    }
+
+    location /phpBB3/images/ {
+        expires max;
+    }
+
+    location /phpBB3/styles/ {
+        expires max;
+    }
+
+    error_page 503 @maintenance;
+    location @maintenance {
+        rewrite ^(.*)$ /maintenance.html break;
+        internal;
+    }
+}
+
+# albums subdomain - legacy files serving
+server {
+    listen 80;
+    server_name albums.{{ server.name }};
+    return 301 https://albums.{{ server.name }}$request_uri;
+}
+
+server {
+    listen       443;
+    server_name albums.{{ server.name }};
+    error_log /var/log/nginx/{{ user }}/albums.error.log warn;
+    access_log  /var/log/nginx/{{ user }}/albums.access.log main;
+
+    charset utf-8;
+    root /mnt/bigstorage/{{ user }}/production/legacy;
+
+    ssl on;
+    ssl_certificate /etc/ssl/wildcard.{{ user }}.crt;
+    ssl_certificate_key /etc/ssl/{{ user }}.key;
+    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
+
+    # 180 days
+    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+
+    # gzip static files
+    gzip on;
+    gzip_min_length 1000;
+    gzip_types
+        text/css
+        text/plain
+        text/javascript
+        application/javascript
+        application/x-javascript
+        application/json;
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /coppermine/ {
+        expires max;
+    }
+}

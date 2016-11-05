@@ -1,0 +1,32 @@
+---
+
+- name: Symlink auth plugin
+  file:
+    src={{ django_src }}/src/phpbb/phpBB3/includes/auth/{{ item }}
+    dest={{ forum_path }}/includes/auth/{{ item }}
+    state=link
+  with_items:
+    - getdjangouser.php
+    - auth_django.php
+
+- name: Disable re-auth for phpBB admin
+  lineinfile:
+    dest={{ forum_path }}/adm/index.php
+    regexp="login_box\('', \$user->lang\['LOGIN_ADMIN_CONFIRM'\], \$user->lang\['LOGIN_ADMIN_SUCCESS'\], true, false\);"
+    line="//    login_box('', $user->lang['LOGIN_ADMIN_CONFIRM'], $user->lang['LOGIN_ADMIN_SUCCESS'], true, false);"
+
+- name: Set up custom styles
+  file:
+    src={{ django_src }}/src/phpbb/phpBB3/styles/subsilver2_dead_topics
+    dest={{ forum_path }}/styles/subsilver2_dead_topics
+    state=link
+
+- name: Install dependencies with composer
+  composer: working_dir={{ django_src }}
+
+- name: Bundle the SystemJS apps
+  shell: php bin/systemjs_bundle.php jspm:bundle
+         chdir={{ django_src }}
+
+- name: Clear the phpBB3 template cache
+  shell: rm -rf {{ forum_path }}/phpBB3/cache/*tpl_*.html.php
