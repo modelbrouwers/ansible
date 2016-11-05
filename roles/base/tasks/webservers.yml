@@ -17,8 +17,12 @@
 - name: Install nginx
   apt: name=nginx state=present
 
-- name: Set main config file
-  copy: src=nginx/nginx.conf
-        dest=/etc/nginx/nginx.conf
+- name: Set main config files
+  copy: src=nginx/{{ item }}
+        dest=/etc/nginx/{{ item }}
   notify:
     - restart nginx
+  with_items:
+    - nginx.conf
+    - conf.d/client_body.conf
+    - conf.d/proxy.conf
