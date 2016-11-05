@@ -19,7 +19,7 @@
 
     ServerName {{ server.name }}
     ServerAlias {{ server.aliases|join(' ') }}
-    ServerAdmin webmaster@{{ inventory_hostname }}
+    ServerAdmin webmaster@{{ server.name }}
     DocumentRoot {{ ansible_env.HOME }}/public_html
 
     UseCanonicalName OFF
@@ -30,6 +30,6 @@
     ErrorLog /var/log/apache2/{{ user }}/error.log
 
     # Redirects and Aliases
-    Redirect /index.php     https://{{ inventory_hostname }}/winkel/
+    Redirect /index.php     https://{{ server.name }}/winkel/
     Alias /albums/coppermine    {{ ansible_env.HOME }}/public_html/_albums/coppermine
 </VirtualHost>
