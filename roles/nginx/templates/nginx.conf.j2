@@ -96,6 +96,11 @@ server {
         alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
     }
 
+    location /albums/coppermine/ {
+        expires max;
+        alias /mnt/bigstorage/{{ user }}/production/legacy/coppermine/;
+    }
+
     location /shop/catalog/images/ {
         expires max;
     }
