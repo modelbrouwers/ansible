@@ -3,32 +3,6 @@
 - name: Deploy the Modelbrouwers.nl domain
   hosts: new
   remote_user: modelbrouw
-  vars:
-    user: modelbrouw
-    env: production
-
-    docroot: "{{ ansible_env.HOME }}/public_html"
-    opencart_url: "https://www.opencart.com/index.php?route=download/download/download&download_id=31"
-    opencart_dir: opencart-1.5.5.1
-    vqmod_url: "https://github.com/vqmod/vqmod/releases/download/v2.6.1-opencart/vqmod-2.6.1-opencart.zip"
-    vqmod_dir: vqmod
-    opencart_extensions_repo: "ssh://git@bitbucket.org/modelbrouwers/opencart-extensions.git"
-
-    phpbb_url: "https://www.phpbb.com/files/release/phpBB-3.0.14.zip"
-
-    server:
-      name: modelbrouwers.nl
-      aliases:
-        - www.modelbrouwers.nl
-        - shop.modelbrouwers.nl
-        - "{{ new_server_ip }}"
-
-    django_root: "{{ ansible_env.HOME }}/django/{{ env }}"
-    uwsgi:
-      port: 8002
-
-    home_ip: 163.158.222.105
-
   roles:
     - apache
     - nginx
