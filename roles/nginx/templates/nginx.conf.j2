@@ -96,6 +96,10 @@ server {
         alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
     }
 
+    location ~ ^/docs/ {
+        rewrite ^/docs/(.*)$ /media/docs/$1 permanent;
+    }
+
     location /albums/coppermine/ {
         expires max;
         alias /mnt/bigstorage/{{ user }}/production/legacy/coppermine/;
