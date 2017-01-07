@@ -4,6 +4,7 @@
 - include: build-tools.yml
 
 - include: auto-updates.yml
+- include: sshd.yml
 - include: firewall.yml
 - include: fail2ban.yml
 - include: bigstorage.yml
