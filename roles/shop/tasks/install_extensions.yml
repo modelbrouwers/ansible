@@ -3,7 +3,7 @@
 - name: Clone extensions repository
   git: repo="{{ opencart_extensions_repo }}"
        dest="{{ ansible_env.HOME }}/opencart-extensions"
-       version=1.0.5
+       version=1.0.7
        accept_hostkey=yes
   register: extensions_clone
 
