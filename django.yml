@@ -5,7 +5,6 @@
   remote_user: modelbrouw
   roles:
     - nginx
-    - kitreviews_legacy
     - maintenance_on
     - django
     - supervisor
