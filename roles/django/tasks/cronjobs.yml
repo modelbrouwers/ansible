@@ -1,7 +1,21 @@
 ---
 
-- name: Cron - Clear compress cache
-  cron: name="clear compress cache"
-        minute=0
-        hour=4
-        job="rm -r {{ project_home }}/static/CACHE && memcflush --servers=localhost:11211"
+- name: Clear compress cache
+  cron:
+    name: clear compress cache
+    minute: 0
+    hour: 4
+    job: "rm -r {{ project_home }}/static/CACHE && memcflush --servers=localhost:11211"
+
+- name: Process data downloads
+  cron:
+    name: process_data_downloads
+    minute: */5
+    job: "{{ venv }}/bin/python {{ project_home }}/src/manage.py process_data_downloads --settings={{ settings_module }}"
+
+- name: Clear data downloads
+  cron:
+    name: clear_data_downloads
+    minute: 0
+    hour: 1
+    job: "{{ venv }}/bin/python {{ project_home }}/src/manage.py clear_data_downloads --settings={{ settings_module }}"
