@@ -10,7 +10,7 @@
 - name: Process data downloads
   cron:
     name: process_data_downloads
-    minute: */5
+    minute: "*/5"
     job: "{{ venv }}/bin/python {{ project_home }}/src/manage.py process_data_downloads --settings={{ settings_module }}"
 
 - name: Clear data downloads
