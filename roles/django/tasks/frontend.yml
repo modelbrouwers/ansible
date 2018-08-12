@@ -17,5 +17,5 @@
   args:
     chdir: "{{ project_home }}"
 
-- name: Install dependencies with Bower :(
-  bower: offline=no path={{ project_home }} production=yes
+# - name: Install dependencies with Bower :(
+#   bower: offline=no path={{ project_home }} production=yes
