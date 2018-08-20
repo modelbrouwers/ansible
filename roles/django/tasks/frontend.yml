@@ -4,7 +4,6 @@
 - name: Ensure global NPM programs are installed
   npm: name="{{ item }}" global=yes
   with_items:
-    - bower
     - jspm
     - gulp
   remote_user: root
@@ -16,6 +15,3 @@
   command: jspm install
   args:
     chdir: "{{ project_home }}"
-
-# - name: Install dependencies with Bower :(
-#   bower: offline=no path={{ project_home }} production=yes
