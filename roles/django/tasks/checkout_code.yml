@@ -2,13 +2,14 @@
 # Check out the repo, fast forward and create the necesary dirs
 
 - name: Clone and/or update the repo
-  git: repo={{ django_repo }}
-       dest="{{ project_home }}"
-       version={{ release }}
-       force=yes
-       depth=1
-       accept_hostkey=yes
-       # refspec="refs/heads/*:refs/remotes/origin/*"
+  git:
+    repo: "{{ django_repo }}"
+    dest: "{{ project_home }}"
+    version: "{{ release }}"
+    force: yes
+    depth: 1
+    accept_hostkey: yes
+    # refspec="refs/heads/*:refs/remotes/origin/*"
   notify:
     - restart uwsgi
 
