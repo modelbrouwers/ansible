@@ -1,6 +1,6 @@
 # Root and www
 
-upstream {{ env }}_django {
+upstream {{ user }}_{{ env }}_django {
     server 127.0.0.1:{{ uwsgi.port }};
 }
 
@@ -70,7 +70,7 @@ server {
     }
 
     location @django {
-        uwsgi_pass {{ env }}_django;
+        uwsgi_pass {{ user }}_{{ env }}_django;
         include uwsgi_params;
     }
 
