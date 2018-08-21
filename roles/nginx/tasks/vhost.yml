@@ -16,6 +16,11 @@
     group: www-data
   remote_user: root
 
+- name: Ensure the docroot exists
+  file:
+    path: "{{ docroot }}"
+    state: directory
+
 - name: Install the Nginx config file
   template:
     src: nginx.conf.j2
