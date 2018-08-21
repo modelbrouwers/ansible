@@ -1,6 +1,6 @@
 # Root and www
 
-upstream production_django {
+upstream {{ env }}_django {
     server 127.0.0.1:{{ uwsgi.port }};
 }
 
@@ -70,7 +70,7 @@ server {
     }
 
     location @django {
-        uwsgi_pass production_django;
+        uwsgi_pass {{ env }}_django;
         include uwsgi_params;
     }
 
@@ -81,19 +81,19 @@ server {
 
     location /static/ {
         expires max;
-        root {{ ansible_env.HOME }}/django/production;
+        root {{ ansible_env.HOME }}/django/{{ env }};
         access_log  /var/log/nginx/modelbrouw/static.modelbrouwers.nl.access.log;
     }
 
     location /media/ {
         expires 30d;
-        root {{ ansible_env.HOME }}/django/production;
+        root {{ ansible_env.HOME }}/django/{{ env }};
         access_log  /var/log/nginx/modelbrouw/media.modelbrouwers.nl.access.log;
     }
 
     location /protected/ {
         internal;
-        alias {{ ansible_env.HOME }}/django/production/media_sendfile/;
+        alias {{ ansible_env.HOME }}/django/{{ env }}/media_sendfile/;
     }
 
     location ~ ^/docs/ {
@@ -102,7 +102,7 @@ server {
 
     location /albums/coppermine/ {
         expires max;
-        alias /mnt/bigstorage/{{ user }}/production/legacy/coppermine/;
+        alias /mnt/bigstorage/{{ user }}/{{ env }}/legacy/coppermine/;
     }
 
     location /shop/catalog/images/ {
@@ -151,7 +151,7 @@ server {
     access_log  /var/log/nginx/{{ user }}/albums.access.log main;
 
     charset utf-8;
-    root /mnt/bigstorage/{{ user }}/production/legacy;
+    root /mnt/bigstorage/{{ user }}/{{ env }}/legacy;
 
     ssl on;
     ssl_certificate /etc/ssl/wildcard.{{ user }}.crt;

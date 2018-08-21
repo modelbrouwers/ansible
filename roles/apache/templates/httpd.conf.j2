@@ -6,7 +6,7 @@
         AllowOverride All
         SetEnv STATIC_URL /static/
         SetEnv DEBUG 0
-        SetEnv KEY_PREFIX production
+        SetEnv KEY_PREFIX {{ env }}
         SetEnv RAVEN_DSN '{{ sentry.php }}'
         # php_admin_flag safe_mode OFF
         # php_admin_flag engine ON
