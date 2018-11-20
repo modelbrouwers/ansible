@@ -1,7 +1,7 @@
 ---
 
 - name: Deploy the Modelbrouwers.nl domain
-  hosts: new
+  hosts: web
   remote_user: modelbrouw
   roles:
     - apache

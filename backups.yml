@@ -1,7 +1,7 @@
 ---
 
 - name: Configure the backups
-  hosts: new
+  hosts: web
   remote_user: modelbrouw
   roles:
     - backups

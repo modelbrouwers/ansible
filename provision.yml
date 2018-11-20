@@ -3,7 +3,7 @@
 # Playbook to set up a new server from scratch
 
 - name: Provision the server
-  hosts: new
+  hosts: web
   remote_user: root
   vars:
     admin_email: "sergei@modelbrouwers.nl"
