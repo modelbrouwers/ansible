@@ -20,7 +20,7 @@
     ServerName {{ server.name }}
     ServerAlias {{ server.aliases|join(' ') }}
     ServerAdmin webmaster@{{ server.name }}
-    DocumentRoot {{ ansible_env.HOME }}/public_html
+    DocumentRoot {{ docroot }}
 
     UseCanonicalName OFF
 

@@ -4,7 +4,9 @@
   hosts: web
   remote_user: modelbrouw
   roles:
-    - apache
+    - role: apache
+      tags:
+        - apache
     - nginx
     - shop
     - maintenance_on

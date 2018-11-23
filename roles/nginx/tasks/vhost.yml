@@ -24,15 +24,15 @@
 - name: Install the Nginx config file
   template:
     src: nginx.conf.j2
-    dest: /etc/nginx/sites-available/{{ user }}.{{ env }}
+    dest: /etc/nginx/sites-available/{{ user }}.{{ env }}.conf
   remote_user: root
   notify:
     - reload nginx
 
 - name: Ensure the site is enabled (symlink)
   file:
-    src: ../sites-available/{{ user }}.{{ env }}
-    dest: /etc/nginx/sites-enabled/{{ user }}.{{ env }}
+    src: /etc/nginx/sites-available/{{ user }}.{{ env }}.conf
+    dest: /etc/nginx/sites-enabled/{{ user }}.{{ env }}.conf
     state: link
   remote_user: root
   notify:
