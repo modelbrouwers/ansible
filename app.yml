@@ -3,6 +3,8 @@
 - name: Deploy the Modelbrouwers.nl domain
   hosts: web
   remote_user: modelbrouw
+  vars:
+    shop_extensions_version: 1.0.10
   roles:
     - role: apache
       tags:
