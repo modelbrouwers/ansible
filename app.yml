@@ -12,8 +12,10 @@
     - nginx
     - shop
     - maintenance_on
-    - django
-    - forum
+    - django  # fixme: requires mysql db (user) to exist to run migrations
+    - role: forum
+      tags:
+        - forum
     - supervisor
     - maintenance_off
   become_method: su
