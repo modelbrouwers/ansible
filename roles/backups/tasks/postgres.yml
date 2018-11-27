@@ -35,7 +35,8 @@
     mode=0600
 
 - name: Install postgres backup cronjob
-  cron: name="postgres backup"
-        minute=50
-        hour=1
-        job="bash {{ backups_dir }}/pg_backup_rotated.sh"
+  cron:
+    name: "postgres backup"
+    minute: 50
+    hour: 1
+    job: "bash {{ backups_dir }}/pg_backup_rotated.sh"

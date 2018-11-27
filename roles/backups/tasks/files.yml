@@ -2,24 +2,25 @@
 
 - name: Install the generic file backup script
   copy:
-    src=incremental_backup.sh
-    dest="{{ backups_dir }}/incremental_backup.sh"
-    mode=0700
+    src: incremental_backup.sh
+    dest: "{{ backups_dir }}/incremental_backup.sh"
+    mode: 0700
 
 - name: Install the file backup scripts
   template:
-    src="{{ item }}.j2"
-    dest="{{ backups_dir }}/{{ item }}"
-    mode=0700
+    src: "{{ item }}.j2"
+    dest: "{{ backups_dir }}/{{ item }}"
+    mode: 0700
   with_items:
     - backup_shop_images.sh
     - backup_forum_files.sh
 
 - name: Install file backup cronjobs
-  cron: name="{{ item }}"
-        minute=0
-        hour=3
-        job="bash {{ backups_dir }}/{{ item }}.sh"
+  cron:
+    name: "{{ item }}"
+    minute: 0
+    hour: 3
+    job: "bash {{ backups_dir }}/{{ item }}.sh"
   with_items:
     - backup_shop_images
     - backup_forum_files

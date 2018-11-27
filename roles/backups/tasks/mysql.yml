@@ -32,7 +32,8 @@
     mode=0600
 
 - name: Install mysql backup cronjob
-  cron: name="mysql backup"
-        minute=0
-        hour=2
-        job="bash {{ backups_dir }}/mysql_backup_rotated.sh"
+  cron:
+    name: "mysql backup"
+    minute: 0
+    hour: 2
+    job: "bash {{ backups_dir }}/mysql_backup_rotated.sh"
