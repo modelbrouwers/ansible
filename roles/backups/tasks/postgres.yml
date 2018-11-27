@@ -28,6 +28,7 @@
     dest="{{ backups_dir }}/pg_backup_rotated.sh"
     mode=0700
 
+# FIXME: config per env...
 - name: Install postgres backup config
   template:
     src=pg_backup.config.j2
