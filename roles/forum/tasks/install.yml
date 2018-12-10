@@ -1,17 +1,24 @@
 ---
 
+# Download the installer if needed
+
 - name: Ensure download folder exists
   file: dest={{ ansible_env.HOME }}/downloads/ state=directory
 
 - name: Download the phpBB3 installer
   unarchive:
-    src="{{ phpbb_url }}"
-    dest={{ ansible_env.HOME }}/downloads/
-    copy=no
-    creates={{ ansible_env.HOME }}/downloads/phpBB3
+    src: "{{ phpbb_url }}"
+    dest: "{{ ansible_env.HOME }}/downloads/"
+    copy: no
+    creates: "{{ ansible_env.HOME }}/downloads/phpBB3"
 
-- name: Ensure public_html folder exists
-  file: dest={{ ansible_env.HOME }}/public_html/ state=directory mode=0750
+# Set up document root etc.
+
+- name: Ensure docroot exists
+  file:
+    dest: "{{ docroot }}"
+    state: directory
+    mode: 0750
 
 - name: stat 'phpBB3' folder
   stat: path={{ forum_path }}/
@@ -22,12 +29,17 @@
   when: not stat_forum.stat.exists
 
 - name: Ensure the apache user is part of the app user group
-  user: name=www-data append=yes groups={{ item }}
+  user:
+    name: www-data
+    append: yes
+    groups: "{{ item }}"
   with_items: "{{ users }}"
   remote_user: root
 
 - name: Delete install directory
-  file: path={{ forum_path}}/install state=absent
+  file:
+    path: "{{ forum_path}}/install"
+    state: absent
 
 - name: Install correct config file
   template:
@@ -37,10 +49,10 @@
 
 - name: Set group-write permissions on the required folders
   file:
-    path={{ forum_path }}/{{ item }}
-    state=directory
-    mode=0770
-    recurse=yes
+    path: "{{ forum_path }}/{{ item }}"
+    state: directory
+    mode: 0770
+    recurse: yes
   with_items:
     - cache
     - files
@@ -51,16 +63,20 @@
 
 - name: Create database user for the forum
   mysql_user:
-    name="{{ forum_db.user }}"
-    password="{{ forum_db.password }}"
-    host=localhost
-    state=present
+    name: "{{ forum_db.user }}"
+    password: "{{ forum_db.password }}"
+    host: localhost
+    state: present
   remote_user: root
 
 - name: Create database for the forum
-  mysql_db: name="{{ forum_db.name }}" state=present
+  mysql_db:
+    name: "{{ forum_db.name }}"
+    state: present
   remote_user: root
 
 - name: Grant db user privileges
-  mysql_user: name="{{ forum_db.user }}" priv="{{ forum_db.name }}.*:ALL"
+  mysql_user:
+    name: "{{ forum_db.user }}"
+    priv: "{{ forum_db.name }}.*:ALL"
   remote_user: root
