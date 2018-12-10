@@ -10,7 +10,6 @@
       tags:
         - apache
     - nginx
-    - shop
     - maintenance_on
     - django  # fixme: requires mysql db (user) to exist to run migrations
     - role: forum

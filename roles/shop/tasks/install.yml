@@ -57,15 +57,15 @@
 
 - name: Ensure the config files are touched
   file:
-    dest={{ shop_path }}/{{ item.dest }}
-    state={{ item.state }}
-    owner={{ user }}
-    group={{ user }}
-    mode=0660
+    dest: "{{ shop_path }}/{{ item.dest }}"
+    state: "{{ item.state }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0660
   with_items:
-    - {dest: config.php, state: file}
+    - {dest: config.php, state: touch}
     - {dest: config-dist.php, state: absent}
-    - {dest: admin/config.php, state: file}
+    - {dest: admin/config.php, state: touch}
     - {dest: admin/config-dist.php, state: absent}
   when: not stat_winkel.stat.exists
 
