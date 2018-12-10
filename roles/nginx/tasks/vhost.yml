@@ -10,7 +10,7 @@
 
 - name: Ensure the log directory exists
   file:
-    path: /var/log/nginx/{{ user }}
+    path: /var/log/nginx/{{ user }}.{{ env }}
     state: directory
     owner: www-data
     group: www-data

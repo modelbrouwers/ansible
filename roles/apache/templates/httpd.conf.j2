@@ -2,7 +2,12 @@
 
 <VirtualHost 127.0.0.1:8080 >
 
-    <Directory {{ ansible_env.HOME }}/public_html>
+    ServerName {{ server.name }}
+    ServerAlias {{ server.aliases|join(' ') }}
+    ServerAdmin webmaster@{{ server.name }}
+    DocumentRoot {{ docroot }}
+
+    <Directory {{ docroot }}>
         AllowOverride All
         SetEnv STATIC_URL /static/
         SetEnv DEBUG 0
@@ -17,19 +22,14 @@
 
     Header always append X-Frame-Options SAMEORIGIN
 
-    ServerName {{ server.name }}
-    ServerAlias {{ server.aliases|join(' ') }}
-    ServerAdmin webmaster@{{ server.name }}
-    DocumentRoot {{ docroot }}
-
     UseCanonicalName OFF
 
     # Log configuration
-    CustomLog /var/log/apache2/{{ user }}/access.bytes bytes
-    CustomLog /var/log/apache2/{{ user }}/access.log combined
-    ErrorLog /var/log/apache2/{{ user }}/error.log
+    CustomLog /var/log/apache2/{{ user }}.{{ env }}/access.bytes bytes
+    CustomLog /var/log/apache2/{{ user }}.{{ env }}/access.log combined
+    ErrorLog /var/log/apache2/{{ user }}.{{ env }}/error.log
 
     # Redirects and Aliases
     Redirect /index.php     https://{{ server.name }}/winkel/
-    Alias /albums/coppermine    {{ ansible_env.HOME }}/public_html/_albums/coppermine
+    Alias /albums/coppermine    {{ docroot }}/_albums/coppermine
 </VirtualHost>
