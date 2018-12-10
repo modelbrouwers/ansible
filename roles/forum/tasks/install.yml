@@ -44,7 +44,7 @@
 - name: Install correct config file
   template:
     src: config.php.j2
-    dest: "{{ forum_path }}/config.php "
+    dest: "{{ forum_path }}/config.php"
     mode: 0740
 
 - name: Set group-write permissions on the required folders
