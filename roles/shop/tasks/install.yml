@@ -5,20 +5,23 @@
 
 - name: Download the opencart installer
   unarchive:
-    src="{{ opencart_url }}"
-    dest={{ ansible_env.HOME }}/downloads/
-    copy=no
-    creates={{ ansible_env.HOME }}/downloads/{{ opencart_dir }}
+    src: "{{ opencart_url }}"
+    dest: "{{ ansible_env.HOME }}/downloads/"
+    copy: no
+    creates: "{{ ansible_env.HOME }}/downloads/{{ opencart_dir }}"
 
-- name: Ensure public_html folder exists
-  file: dest={{ ansible_env.HOME }}/public_html/ state=directory mode=0750
+- name: Ensure docroot folder exists
+  file:
+    path: "{{ docroot }}"
+    state: directory
+    mode: 0750
 
 - name: stat 'winkel' folder
   stat: path={{ shop_path }}/
   register: stat_winkel
 
-- name: Move shop to public_html
-  command: mv {{ ansible_env.HOME }}/downloads/{{ opencart_dir }}/upload {{ ansible_env.HOME }}/public_html/winkel
+- name: Move shop to docroot
+  command: mv {{ ansible_env.HOME }}/downloads/{{ opencart_dir }}/upload {{ docroot }}/winkel
   when: not stat_winkel.stat.exists
 
 - name: Ensure the apache user is part of the app user group
