@@ -16,6 +16,16 @@
     state: link
     force: yes
 
+- name: Symlink code root (Docker setup compatibility)
+  file:
+    src: "{{ django_src }}/{{ item }}"
+    dest: "{{ forum_path }}/src/{{ item }}"
+    state: link
+  with_items:
+    - conf/settings.php
+    - phpbb
+    - templates
+
 - name: Disable re-auth for phpBB admin
   lineinfile:
     dest="{{ forum_path }}/adm/index.php"
