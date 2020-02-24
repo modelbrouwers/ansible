@@ -16,9 +16,17 @@
     state: link
     force: yes
 
+- name: Ensure paths exist
+  file:
+    path: "{{ forum_path }}/{{ item }}"
+    state: directory
+  with_items:
+    - src
+    - src/conf
+
 - name: Symlink code root (Docker setup compatibility)
   file:
-    src: "{{ django_src }}/{{ item }}"
+    src: "{{ django_src }}/src/{{ item }}"
     dest: "{{ forum_path }}/src/{{ item }}"
     state: link
   with_items:
