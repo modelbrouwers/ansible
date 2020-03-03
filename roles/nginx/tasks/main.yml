@@ -1,4 +1,8 @@
 ---
 
-- include: ssl.yml
-- include: vhost.yml
+- import_tasks: dhparams.yml
+
+- import_tasks: ssl.yml
+  when: nginx_install_ssl
+
+- import_tasks: vhost.yml

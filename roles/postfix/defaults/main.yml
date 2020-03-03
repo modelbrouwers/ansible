@@ -1,0 +1,17 @@
+---
+
+postfix_mydomain: "{{ ansible_hostname }}"
+postfix_extra_local_networks: []
+postfix_inet_interfaces:
+  - all
+
+postfix_db_user: postfix
+postfix_db_password: postfix
+postfix_db_name: postfix
+
+postfix_dovecot_enabled: no
+postfix_vmail_postgres: no
+
+postfix_vmail_basedir: /var/mail/domains
+postfix_vmail_uid: 1005
+postfix_vmail_gid: "{{ postfix_vmail_uid }}"

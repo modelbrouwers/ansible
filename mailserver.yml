@@ -1,25 +1,37 @@
 ---
 
 # Checklist:
-# - [ ] Hostname properly configured (no IP adresses)
+# - [x] Hostname properly configured (no IP adresses)
 # - [ ] DNS configured (MX, A and PTR)
 # - [ ] SSL cert set up for dynamic domains
 # - [ ] Encryption set up
-# - [ ] Virtual domains & forwards migrated
+# - [x] Virtual domains & forwards migrated
 # - [ ] Mailboxes correctly migrated & functional
-# - [ ] Ensure docker container IP adresses are still in mynetworks
+# - [x] Ensure docker container IP adresses are still in mynetworks
 #     - 172.17.0.2
 #     - 172.17.0.3
 #     - 172.17.0.4
-# - [ ] inet_interfaces = localhost, 172.17.0.1
+# - [x] inet_interfaces = localhost, 172.17.0.1
+# - [ ] webmail
+# - [ ]Maildir default dirs
 
 - name: Set up the mailserver for outgoing and incoming e-mail
   hosts: mail
   remote_user: root
+
+  vars:
+    postfixer_postgresql_version: '9.6'
+
   roles:
-    - geerlingguy.docker
-    - postfixer
-    - ssl
-    - nginx
-    - postfix
-    - dovecot
+    - role: geerlingguy.docker
+    - role: geerlingguy.certbot
+    - role: postfixer
+    - role: nginx
+      tags:
+        - nginx
+    - role: postfix
+      tags:
+        - postfix
+    - role: dovecot
+      tags:
+        - postfix

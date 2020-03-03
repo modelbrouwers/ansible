@@ -1,0 +1,13 @@
+---
+
+- name: Check if custom DH cert exists
+  stat:
+    path: /etc/ssl/certs/dhparam.pem
+  register: has_custom_dh_cert
+  remote_user: root
+
+- name: Generate custom DH cert
+  shell: openssl dhparam -out dhparam.pem 4096
+         chdir=/etc/ssl/certs/
+  when: has_custom_dh_cert.stat.exists == False
+  remote_user: root

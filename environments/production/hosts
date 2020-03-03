@@ -3,3 +3,6 @@ modelbrouwers.nl
 
 [old]
 old.modelbrouwers.nl ansible_python_interpreter=/opt/python2.7/bin/python venv_command=/opt/python2.7/bin/virtualenv
+
+[mail]
+geralt.modelbrouwers.nl
