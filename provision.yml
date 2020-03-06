@@ -9,6 +9,4 @@
     admin_email: "sergei@modelbrouwers.nl"
   roles:
     - base
-    # - ftp
-    - mail
     - users
