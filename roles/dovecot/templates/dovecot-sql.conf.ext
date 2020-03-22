@@ -10,7 +10,7 @@ password_query = \
 
 user_query = SELECT \
     CONCAT("user_part", '@', "domain_part") AS "user", \
-    CONCAT('{{ dovecot_mail_basedir }}', '/', "domain_part", '/', "user_part", '/') AS "mail", \
+    CONCAT('maildir:', '{{ dovecot_mail_basedir }}', '/', "domain_part", '/', "user_part", '/') AS "mail", \
     CONCAT('{{ dovecot_home_basedir }}', "domain_part", '/', "user_part", '/') AS "home", \
     {{ dovecot_user_uid }} AS uid, \
     {{ dovecot_user_uid }} AS gid \
