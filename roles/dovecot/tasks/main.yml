@@ -34,6 +34,7 @@
     owner: "{{ dovecot_user }}"
     group: "{{ dovecot_user }}"
     mode: u=rwx,g=rwx,o=
+    follow: yes
   with_items:
     - "{{ dovecot_mail_basedir }}"
     - "{{ dovecot_home_basedir }}"
