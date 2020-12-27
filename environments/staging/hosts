@@ -3,3 +3,6 @@ staging.modelbrouwers.nl
 
 [mail]
 geralt.modelbrouwers.nl
+
+[docker_registry]
+geralt.modelbrouwers.nl

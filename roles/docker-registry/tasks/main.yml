@@ -1,0 +1,60 @@
+---
+
+# Deploy the registry container
+
+- name: Ensure a separate network exists
+  docker_network:
+    name: "{{ docker_registry_network }}"
+
+- name: Create a volume for the images
+  docker_volume:
+    name: "{{ docker_registry_volume }}"
+
+- name: Ensure registry container runs
+  docker_container:
+    name: registry
+    image: "{{ docker_registry_image }}"
+    pull: yes
+    hostname: registry
+    state: started
+    restart: no
+    restart_policy: always
+    networks:
+      - name: "{{ docker_registry_network }}"
+    volumes:
+      - "{{ docker_registry_volume }}:/var/lib/registry"
+    env:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+
+    published_ports:
+      - "127.0.0.1:{{ docker_registry_port }}:5000"
+
+- name: Allow traffic in firewall on docker0 interface
+  ufw:
+    interface: docker0
+    rule: allow
+    direction: out
+
+- name: Create user
+  user:
+    name: "{{ docker_registry_username }}"
+    create_home: yes
+
+# Setup reverse proxy
+
+- name: Ensure passlib is available
+  package:
+    name: python-passlib
+  remote_user: root
+
+- name: Ensure htpasswd file exists
+  file:
+    path: "/home/{{ docker_registry_username }}/passwdfile"
+    state: touch
+    group: www-data
+    mode: u=rw,g=r,o=
+
+- htpasswd:
+    path: "/home/{{ docker_registry_username }}/passwdfile"
+    name: "{{ docker_registry_username }}"
+    password: "{{ docker_registry_password }}"

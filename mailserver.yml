@@ -19,14 +19,11 @@
   hosts: mail
   remote_user: root
 
+  vars_files:
+    - vars/certbot.yml
+
   vars:
     postfixer_postgresql_version: '9.6'
-
-    certbot_create_standalone_stop_services:
-      - nginx
-    certbot_auto_renew_options: >
-      --nginx --quiet --no-self-upgrade
-      --post-hook 'service nginx reload && service postfix reload && service dovecot reload'
 
   roles:
     - role: geerlingguy.docker

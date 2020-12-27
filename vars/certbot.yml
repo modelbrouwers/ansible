@@ -1,0 +1,8 @@
+---
+
+certbot_install_from_source: yes
+certbot_create_standalone_stop_services:
+  - nginx
+certbot_auto_renew_options: >
+  --nginx --quiet --no-self-upgrade
+  --post-hook 'service nginx reload && service postfix reload && service dovecot reload'

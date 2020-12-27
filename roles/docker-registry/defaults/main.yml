@@ -1,0 +1,9 @@
+---
+
+docker_registry_network: docker-registry
+docker_registry_volume: docker-registry
+
+docker_registry_image: docker.io/library/registry:2
+docker_registry_port: 5000
+
+docker_registry_username: docker-registry

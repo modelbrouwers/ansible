@@ -1,0 +1,26 @@
+---
+
+- name: Set up private docker registry
+  hosts: docker_registry
+  remote_user: root
+
+  vars_files:
+    - vars/certbot.yml
+
+  vars:
+    certbot_certs:
+      - domains:
+        - "{{ registry_domain }}"
+
+
+    nginx_install_ssl: no  # no paid certificates, we use LE
+    nginx_hostname: "{{ registry_domain }}"
+    nginx_vhost_template: templates/registry.conf.j2
+    nginx_proxy_port: "{{ docker_registry_port }}"
+    nginx_prefix: docker_registry
+
+  roles:
+    - role: geerlingguy.docker
+    - role: geerlingguy.certbot
+    - role: docker-registry
+    - role: nginx
