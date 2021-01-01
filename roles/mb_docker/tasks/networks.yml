@@ -1,0 +1,7 @@
+---
+
+- name: Create network for Django container(s)
+  community.general.docker_network:
+    name: "{{ mb_docker_network }}"
+    driver: bridge
+    appends: no

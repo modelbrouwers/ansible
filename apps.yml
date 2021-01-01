@@ -1,0 +1,16 @@
+---
+
+- name: Deploy the web-applications (as containers)
+  hosts: web
+  remote_user: root
+
+  vars:
+    mb_docker_network: "modelbrouwers-{{ env }}"
+    mb_docker_volume_prefix: "mb-{{ env }}"
+    mb_docker_volume_storage_root: "/mnt/bigstorage/modelbrouw/{{ env }}"
+
+  roles:
+    - role: geerlingguy.docker
+    - role: mb_docker
+      tags:
+        - apps

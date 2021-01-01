@@ -1,0 +1,47 @@
+---
+
+mb_docker_network: mb_docker
+
+mb_docker_volume_prefix: mb_docker
+mb_docker_volume_storage_root: /mnt/bigstorage
+
+mb_docker_volumes:
+  media:
+    name: "{{ mb_docker_volume_prefix }}-media"
+    perms: o=rw,g=r,o=
+    owner: 1000
+    group: root
+    symlink: "{{ mb_docker_volume_storage_root }}/media"
+
+  media_sendfile:
+    name: "{{ mb_docker_volume_prefix }}-media_sendfile"
+    perms: o=rw,g=r,o=
+    owner: 1000
+    group: root
+    symlink: "{{ mb_docker_volume_storage_root }}/media_sendfile"
+
+  logs:
+    name: "{{ mb_docker_volume_prefix }}-logs"
+    perms: o=rw,g=r,o=
+    owner: 1000
+    group: root
+
+  phpbb_cache:
+    name: "{{ mb_docker_volume_prefix }}-phpbb_cache"
+    perms: o=rw,g=r,o=
+    owner: root
+    group: root
+
+  phpbb_images:
+    name: "{{ mb_docker_volume_prefix }}-phpbb_images"
+    perms: o=rw,g=r,o=
+    owner: root
+    group: root
+    symlink: "{{ mb_docker_volume_storage_root }}/phpbb_images"
+
+  shop:
+    name: "{{ mb_docker_volume_prefix }}-shop"
+    perms: o=rw,g=r,o=
+    owner: root
+    group: root
+    symlink: "{{ mb_docker_volume_storage_root }}/shop"

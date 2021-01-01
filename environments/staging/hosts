@@ -2,7 +2,7 @@
 db.modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3
 
 [web]
-staging.modelbrouwers.nl
+staging.modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3
 
 [mail]
 geralt.modelbrouwers.nl
