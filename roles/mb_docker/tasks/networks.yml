@@ -1,6 +1,6 @@
 ---
 
-- name: Create network for Django container(s)
+- name: Ensure isolated network is present
   community.general.docker_network:
     name: "{{ mb_docker_network }}"
     driver: bridge

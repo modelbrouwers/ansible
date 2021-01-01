@@ -9,6 +9,15 @@
     mb_docker_volume_prefix: "mb-{{ env }}"
     mb_docker_volume_storage_root: "/mnt/bigstorage/modelbrouw/{{ env }}"
 
+    mb_docker_hostname_suffix: "mb-{{ env }}"
+    mb_docker_django_secret_key: "{{ django.secret_key }}"
+    mb_docker_django_domain: "{{ server.name }}"
+
+    mb_docker_django_db:
+      postgres: "{{ django_db }}"
+      mysql: "{{ forum_db }}"
+    mb_docker_django_port: "{{ uwsgi.port }}"
+
   roles:
     - role: geerlingguy.docker
     - role: mb_docker
