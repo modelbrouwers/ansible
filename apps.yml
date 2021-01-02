@@ -10,13 +10,18 @@
     mb_docker_volume_storage_root: "/mnt/bigstorage/modelbrouw/{{ env }}"
 
     mb_docker_hostname_suffix: "mb-{{ env }}"
-    mb_docker_django_secret_key: "{{ django.secret_key }}"
-    mb_docker_django_domain: "{{ server.name }}"
+    mb_docker_default_from_email: "{{ django.from_email }}"
 
+    mb_docker_django_domain: "{{ server.name }}"
+    mb_docker_django_secret_key: "{{ django.secret_key }}"
     mb_docker_django_db:
       postgres: "{{ django_db }}"
       mysql: "{{ forum_db }}"
     mb_docker_django_port: "{{ uwsgi.port }}"
+    mb_docker_django_mibbit_settings: "{{ mibbit_settings }}"
+    mb_docker_django_sentry_dsn: "{{ sentry.django }}"
+
+    mb_docker_phpbb_uid_cookie: phpbb3_10uny8_u
 
   roles:
     - role: geerlingguy.docker
