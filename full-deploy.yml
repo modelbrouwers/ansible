@@ -1,5 +1,6 @@
 ---
 
-- include: provision.yml
-- include: app.yml
-- include: backups.yml
+- ipmort_playbook: provision.yml
+- ipmort_playbook: databases.yml
+- ipmort_playbook: apps.yml
+- ipmort_playbook: backups.yml

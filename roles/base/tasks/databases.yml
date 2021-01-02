@@ -3,17 +3,8 @@
 - name: Install the databases used
   apt: name={{ item }} state=present force=yes
   with_items:
-    - postgresql
-    - postgresql-client
-
     - mysql-server
     - mysql-client
-
-    - python-dev
-
-    - libpq-dev
-    - python-psycopg2
-
     - libmysqlclient-dev
     - python-mysqldb
 
@@ -39,20 +30,3 @@
 
 - name: remove the test database
   mysql_db: name=test state=absent
-
-
-# Set up PostgreSQL properly
-
-- name: Install correct pg_hba.conf rules for postgres user
-  lineinfile: dest=/etc/postgresql/9.4/main/pg_hba.conf
-              regexp='^local   all             (all|postgres)                                \s*(peer|ident)'
-              line='local   all             postgres                                ident'
-  notify:
-    - restart postgres
-
-- name: Enforce password auth for local postgres connections
-  lineinfile: dest=/etc/postgresql/9.4/main/pg_hba.conf
-              insertafter='local   all             postgres                                ident'
-              line='local   all             all                                     md5'
-  notify:
-    - restart postgres
