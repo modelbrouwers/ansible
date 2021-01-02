@@ -32,7 +32,8 @@
       DB_PASSWORD: "{{ mb_docker_shop_db.password }}"
       SELF_ADDRESS: "{{ mb_docker_shop_self_address }}"
     ports:
-      - "{{ mb_docker_shop_port }}:80"
+      - "127.0.0.1:{{ mb_docker_shop_port }}:80"
     comparisons:
       env: strict
       volumes: strict
+      ports: strict

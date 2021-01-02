@@ -31,14 +31,14 @@ mb_docker_volumes:
   phpbb_cache:
     name: "{{ mb_docker_volume_prefix }}-phpbb_cache"
     perms: o=rw,g=r,o=
-    owner: root
-    group: root
+    owner: 33
+    group: 33
 
   phpbb_images:
     name: "{{ mb_docker_volume_prefix }}-phpbb_images"
     perms: o=rw,g=r,o=
-    owner: root
-    group: root
+    owner: 33
+    group: 33
     symlink: "{{ mb_docker_volume_storage_root }}/phpbb_images"
 
   shop:

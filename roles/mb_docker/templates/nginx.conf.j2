@@ -5,15 +5,15 @@
 # Proxy to backing Docker containers
 
 upstream {{ mb_docker_nginx_prefix }}_django {
-    server 172.0.0.1:{{ mb_docker_django_port }};
+    server 127.0.0.1:{{ mb_docker_django_port }};
 }
 
 upstream {{ mb_docker_nginx_prefix }}_phpbb {
-    server 172.0.0.1:{{ mb_docker_phpbb_port }};
+    server 127.0.0.1:{{ mb_docker_phpbb_port }};
 }
 
 upstream {{ mb_docker_nginx_prefix }}_shop {
-    server 172.0.0.1:{{ mb_docker_shop_port }};
+    server 127.0.0.1:{{ mb_docker_shop_port }};
 }
 
 # Redirect non-https to https
@@ -61,6 +61,10 @@ server {
 
     location ~ /\.ht {
         deny all;
+    }
+
+    location /index.php {
+        return 301 /winkel/;
     }
 
     location /phpBB3 {

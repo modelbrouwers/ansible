@@ -32,7 +32,8 @@
       MEMCACHED_HOST: "memcached-{{ mb_docker_hostname_suffix | mandatory }}"
       RAVEN_DSN: "{{ mb_docker_phpbb_sentry_dsn }}"
     ports:
-      - "{{ mb_docker_phpbb_port }}:80"
+      - "127.0.0.1:{{ mb_docker_phpbb_port }}:80"
     comparisons:
       env: strict
       volumes: strict
+      ports: strict
