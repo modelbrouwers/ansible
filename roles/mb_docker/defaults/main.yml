@@ -44,8 +44,8 @@ mb_docker_volumes:
   shop:
     name: "{{ mb_docker_volume_prefix }}-shop"
     perms: o=rw,g=r,o=
-    owner: root
-    group: root
+    owner: 33
+    group: 33
     symlink: "{{ mb_docker_volume_storage_root }}/shop"
 
 # container options
@@ -84,3 +84,16 @@ mb_docker_phpbb_db:
     user: postgres
     password: ''
 mb_docker_phpbb_sentry_dsn: ''
+
+mb_docker_shop_image: docker.modelbrouwers.nl/modelbrouwers/winkel:latest
+mb_docker_shop_db:
+  name: mysql
+  user: root
+  password: ''
+mb_docker_shop_port: 8002
+mb_docker_shop_self_address: https://shop.modelbrouwers.nl
+
+mb_docker_registry:
+  registry_url: docker.modelbrouwers.nl
+  username: ''
+  password: ''

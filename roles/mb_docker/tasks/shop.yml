@@ -1,0 +1,38 @@
+---
+
+- name: Log in to private registry
+  community.general.docker_login:
+    registry_url: "{{ mb_docker_registry.registry_url }}"
+    username: "{{ mb_docker_registry.username }}"
+    password: "{{ mb_docker_registry.password }}"
+
+- name: Ensure phpBB container is running
+  community.general.docker_container:
+    container_default_behavior: no_defaults
+    name: "shop-{{ mb_docker_hostname_suffix | mandatory }}"
+    state: started
+    image: "{{ mb_docker_shop_image }}"
+    pull: yes
+    hostname: "shop-{{ mb_docker_hostname_suffix | mandatory }}"
+    networks:
+      - name: "{{ mb_docker_network }}"
+    network_mode: "{{ mb_docker_network }}"
+    purge_networks: yes
+    networks_cli_compatible: yes
+    privileged: no
+    restart_policy: always
+    memory: 500M
+    memory_reservation: 100M
+    volumes:
+      - "{{ mb_docker_volumes.shop.name }}:/var/www/html/winkel/:rw"
+    env:
+      DB_HOST: "{{ mb_docker_host }}"
+      DB_NAME: "{{ mb_docker_shop_db.name }}"
+      DB_USER: "{{ mb_docker_shop_db.user }}"
+      DB_PASSWORD: "{{ mb_docker_shop_db.password }}"
+      SELF_ADDRESS: "{{ mb_docker_shop_self_address }}"
+    ports:
+      - "{{ mb_docker_shop_port }}:80"
+    comparisons:
+      env: strict
+      volumes: strict

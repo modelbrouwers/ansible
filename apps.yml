@@ -28,6 +28,10 @@
     mb_docker_phpbb_port: "{{ phpbb.port }}"
     mb_docker_phpbb_sentry_dsn: "{{ sentry.php }}"
 
+    mb_docker_shop_db: "{{ shop_db }}"
+    mb_docker_shop_port: "{{ shop.port }}"
+    mb_docker_shop_self_address: "https://{{ inventory_hostname }}"
+
   roles:
     - role: geerlingguy.docker
     - role: mb_docker
