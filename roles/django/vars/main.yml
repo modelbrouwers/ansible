@@ -1,7 +1,0 @@
----
-
-django_repo: "ssh://git@github.com/modelbrouwers/modelbrouwers.git"
-venv: "{{ ansible_env.HOME }}/.virtualenvs/{{ env }}"
-project_home: "{{ django_root }}"
-settings_module: "conf.settings.{{ env }}"
-storage_path: "/mnt/bigstorage/{{ ansible_ssh_user }}/{{ env }}/media"

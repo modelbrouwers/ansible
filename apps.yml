@@ -22,6 +22,11 @@
     mb_docker_django_sentry_dsn: "{{ sentry.django }}"
 
     mb_docker_phpbb_uid_cookie: phpbb3_10uny8_u
+    mb_docker_phpbb_db:
+      mysql: "{{ forum_db }}"
+      postgres: "{{ django_db }}"
+    mb_docker_phpbb_port: "{{ phpbb.port }}"
+    mb_docker_phpbb_sentry_dsn: "{{ sentry.php }}"
 
   roles:
     - role: geerlingguy.docker

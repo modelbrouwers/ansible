@@ -17,7 +17,6 @@
   with_items:
     - "{{ shop_db.name }}"
     - "{{ forum_db.name }}"
-    - "{{ kitreviews_db.name }}"
 
 - name: Install mysql backup script
   copy:
