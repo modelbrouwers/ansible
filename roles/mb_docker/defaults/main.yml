@@ -97,3 +97,7 @@ mb_docker_registry:
   registry_url: docker.modelbrouwers.nl
   username: ''
   password: ''
+
+mb_docker_server:
+  name: "{{ mb_docker_django_domain }}"
+  aliases: []

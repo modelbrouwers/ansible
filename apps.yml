@@ -5,6 +5,8 @@
   remote_user: root
 
   vars:
+    docroot: /home/modelbrouw/public_html
+
     mb_docker_network: "modelbrouwers-{{ env }}"
     mb_docker_volume_prefix: "mb-{{ env }}"
     mb_docker_volume_storage_root: "/mnt/bigstorage/modelbrouw/{{ env }}"
@@ -32,8 +34,29 @@
     mb_docker_shop_port: "{{ shop.port }}"
     mb_docker_shop_self_address: "https://{{ inventory_hostname }}"
 
+    mb_docker_server:
+      name: "{{ inventory_hostname }}"
+      aliases:
+        - "www.{{ inventory_hostname }}"
+
+    certbot_install_from_source: yes
+    certbot_auto_renew: no
+    certbot_create_if_missing: yes
+    certbot_admin_email: sergei@modelbrouwers.nl
+    certbot_certs:
+      - domains: "{{ [mb_docker_server.name] + mb_docker_server.aliases }}"
+
+    certbot_create_standalone_stop_services:
+      - nginx
+
   roles:
     - role: geerlingguy.docker
     - role: mb_docker
       tags:
         - apps
+    - role: geerlingguy.certbot
+    - role: nginx
+      vars:
+        nginx_install_ssl: no  # certbot
+        nginx_prefix: "{{ mb_docker_nginx_prefix }}"
+        nginx_vhost_template: "{{ mb_docker_nginx_template }}"
