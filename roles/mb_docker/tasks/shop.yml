@@ -26,9 +26,9 @@
     volumes:
       - "{{ mb_docker_volumes.shop.name }}:/var/www/html/winkel/:rw"
     env:
-      DB_HOST: "{{ mb_docker_host }}"
+      DB_HOSTNAME: "{{ mb_docker_host }}"
       DB_NAME: "{{ mb_docker_shop_db.name }}"
-      DB_USER: "{{ mb_docker_shop_db.user }}"
+      DB_USERNAME: "{{ mb_docker_shop_db.user }}"
       DB_PASSWORD: "{{ mb_docker_shop_db.password }}"
       SELF_ADDRESS: "{{ mb_docker_shop_self_address }}"
     ports:
