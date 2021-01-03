@@ -131,3 +131,41 @@ server {
         alias {{ mb_docker_volume_storage_root }}/legacy/coppermine/;
     }
 }
+
+# Legacy Coppermine albums
+
+server {
+    listen 80;
+    server_name albums.{{ mb_docker_server.name }};
+    return 301 https://albums.{{ mb_docker_server.name }}$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name albums.{{ mb_docker_server.name }};
+    root {{ mb_docker_volume_storage_root }}/legacy/;
+
+    error_log {{ mb_docker_nginx_log_dir }}/error.log warn;
+    access_log  {{ mb_docker_nginx_log_dir }}/access.log main;
+
+    charset utf-8;
+
+    # SSL configuration
+    ssl_certificate {{ mb_docker_nginx_legacy_certs }}/fullchain.pem;
+    ssl_certificate_key {{ mb_docker_nginx_legacy_certs }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;  # TLSv1.3 is nginx 1.13+
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
+
+    # 180 days
+    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /coppermine/ {
+        return 301 https://{{ mb_docker_server.name }}/albums$request_uri;
+    }
+}

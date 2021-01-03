@@ -45,6 +45,8 @@
     certbot_admin_email: sergei@modelbrouwers.nl
     certbot_certs:
       - domains: "{{ [mb_docker_server.name] + mb_docker_server.aliases }}"
+      - domains:
+        - "albums.{{ mb_docker_server.name }}"
 
     certbot_create_standalone_stop_services:
       - nginx
