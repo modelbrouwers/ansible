@@ -7,45 +7,50 @@ mb_docker_network: mb_docker
 mb_docker_volume_prefix: mb_docker
 mb_docker_volume_storage_root: /mnt/bigstorage
 
+mb_docker_nginx_user: www-data
+mb_docker_apache_user: "{{ mb_docker_nginx_user }}"
+mb_docker_django_user: modelbrouw
+mb_docker_django_group: "{{ mb_docker_django_user }}"
+
 mb_docker_volumes:
   media:
     name: "{{ mb_docker_volume_prefix }}-media"
-    perms: o=rw,g=r,o=
-    owner: 1000
-    group: root
+    perms: o=rwx,g=rx,o=
+    owner: "{{ mb_docker_django_user }}"
+    group: "{{ mb_docker_django_group }}"
     symlink: "{{ mb_docker_volume_storage_root }}/media"
 
   media_sendfile:
     name: "{{ mb_docker_volume_prefix }}-media_sendfile"
-    perms: o=rw,g=r,o=
-    owner: 1000
-    group: root
+    perms: o=rwx,g=rx,o=
+    owner: "{{ mb_docker_django_user }}"
+    group: "{{ mb_docker_django_group }}"
     symlink: "{{ mb_docker_volume_storage_root }}/media_sendfile"
 
   logs:
     name: "{{ mb_docker_volume_prefix }}-logs"
     perms: o=rw,g=r,o=
-    owner: 1000
+    owner: "{{ mb_docker_django_user }}"
     group: root
 
   phpbb_cache:
     name: "{{ mb_docker_volume_prefix }}-phpbb_cache"
     perms: o=rw,g=r,o=
-    owner: 33
-    group: 33
+    owner: "{{ mb_docker_apache_user }}"
+    group: "{{ mb_docker_apache_user }}"
 
   phpbb_images:
     name: "{{ mb_docker_volume_prefix }}-phpbb_images"
     perms: o=rw,g=r,o=
-    owner: 33
-    group: 33
+    owner: "{{ mb_docker_apache_user }}"
+    group: "{{ mb_docker_apache_user }}"
     symlink: "{{ mb_docker_volume_storage_root }}/phpbb_images"
 
   shop:
     name: "{{ mb_docker_volume_prefix }}-shop"
     perms: o=rw,g=r,o=
-    owner: 33
-    group: 33
+    owner: "{{ mb_docker_apache_user }}"
+    group: "{{ mb_docker_apache_user }}"
     symlink: "{{ mb_docker_volume_storage_root }}/shop"
 
 # container options

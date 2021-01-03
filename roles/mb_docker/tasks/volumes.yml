@@ -42,3 +42,9 @@
   loop: "{{ mb_docker_vols.results }}"
   loop_control:
     loop_var: result
+
+- name: Ensure nginx belongs to Django user group
+  user:
+    name: "{{ mb_docker_nginx_user }}"
+    groups: "{{ mb_docker_django_group }}"
+    append: yes

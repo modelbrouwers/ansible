@@ -57,8 +57,12 @@
       tags:
         - apps
     - role: geerlingguy.certbot
+      tags:
+        - nginx
     - role: nginx
       vars:
         nginx_install_ssl: no  # certbot
         nginx_prefix: "{{ mb_docker_nginx_prefix }}"
         nginx_vhost_template: "{{ mb_docker_nginx_template }}"
+      tags:
+        - nginx

@@ -114,12 +114,12 @@ server {
 
     location /media/ {
         expires 30d;
-        alias {{ mb_docker_volumes.media.symlink }};
+        alias {{ mb_docker_volumes.media.symlink }}/;
     }
 
     location /protected/ {
         internal;
-        alias {{ mb_docker_volumes.media_sendfile.symlink }};
+        alias {{ mb_docker_volumes.media_sendfile.symlink }}/;
     }
 
     location ~ ^/docs/ {
