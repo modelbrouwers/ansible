@@ -5,7 +5,7 @@
   remote_user: root
 
   vars:
-    docroot: /home/modelbrouw/public_html
+    docroot: "/home/modelbrouw/public_html{{ '/staging' if env == 'staging' else '' }}"
 
     mb_docker_network: "modelbrouwers-{{ env }}"
     mb_docker_volume_prefix: "mb-{{ env }}"
