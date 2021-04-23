@@ -2,8 +2,18 @@
 
 Ansible playbook(s) for deployment of the Modelbrouwers.nl domain.
 
-Contains the setup for OpenCart, phpBB3, MySQL, PostgreSQL, Apache,
-nginx and Django.
+Contains the setup for container-based deployment of:
+
+* webshop (OpenCart)
+* Django
+* forum (phpBB3)
+
+Including the various databases:
+
+* MySQL
+* PostgreSQL
+
+All of this is frontend by an nginx reverse proxy with Let's Encrypt TLS certificates.
 
 ## Requirements
 
