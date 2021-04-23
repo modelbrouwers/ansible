@@ -4,6 +4,11 @@ backups_dir: "{{ ansible_env.HOME }}/backups"
 
 mysql_dump_privs: "SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER"
 
-# FIXME: use docroot
-shop_path: "{{ ansible_env.HOME }}/public_html/winkel"
-forum_path: "{{ ansible_env.HOME }}/public_html/phpBB3"
+shop_path: "/mnt/bigstorage/modelbrouw/{{ env }}/shop"
+forum_images_path: "/mnt/bigstorage/modelbrouw/{{ env }}/phpbb_images"
+
+backup_folders_rsync:
+  - mysql
+  - postgres
+  - forum
+  - shop

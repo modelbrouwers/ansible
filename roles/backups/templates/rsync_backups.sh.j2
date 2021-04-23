@@ -3,12 +3,12 @@
 USER="{{ db_backups.remote_user }}"
 HOST="{{ db_backups.remote_host }}"
 
-TARGETDIR=/home/modelbrouw/backup_new_vps
+TARGETDIR=/home/modelbrouw/backups
 
 echo "Ensuring target dir exists"
 ssh $USER@$HOST mkdir -p $TARGETDIR
 
-for folder in mysql postgres
+for folder in {{ backup_folders_rsync | join(" ") }}
 do
     echo "Transfering $folder backups to $HOST"
     rsync -rv --delete -e ssh {{ backups_dir }}/$folder/ $USER@$HOST:$TARGETDIR/$folder/

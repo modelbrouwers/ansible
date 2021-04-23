@@ -2,10 +2,10 @@
 
 - name: Create mysql backup user
   mysql_user:
-    name="{{ db_backups.user }}"
-    password="{{ db_backups.password }}"
-    host=localhost
-    state=present
+    name: "{{ db_backups.user }}"
+    password: "{{ db_backups.password }}"
+    host: localhost
+    state: present
   remote_user: root
 
 - name: Grant mysql backup user privileges

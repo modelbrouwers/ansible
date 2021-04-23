@@ -41,16 +41,16 @@ mb_docker_volumes:
 
   phpbb_images:
     name: "{{ mb_docker_volume_prefix }}-phpbb_images"
-    perms: o=rw,g=r,o=
+    perms: o=rw,g=rx,o=
     owner: "{{ mb_docker_apache_user }}"
-    group: "{{ mb_docker_apache_user }}"
+    group: "{{ mb_docker_django_group }}"
     symlink: "{{ mb_docker_volume_storage_root }}/phpbb_images"
 
   shop:
     name: "{{ mb_docker_volume_prefix }}-shop"
-    perms: o=rw,g=r,o=
+    perms: o=rw,g=rx,o=
     owner: "{{ mb_docker_apache_user }}"
-    group: "{{ mb_docker_apache_user }}"
+    group: "{{ mb_docker_django_group }}"
     symlink: "{{ mb_docker_volume_storage_root }}/shop"
 
 # container options
