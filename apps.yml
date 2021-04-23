@@ -35,9 +35,8 @@
     mb_docker_shop_self_address: "https://{{ inventory_hostname }}"
 
     mb_docker_server:
-      name: "{{ inventory_hostname }}"
-      aliases:
-        - "www.{{ inventory_hostname }}"
+      name: "{{ server.name }}"
+      aliases: "{{ server.aliases }}"
 
     certbot_install_from_source: yes
     certbot_auto_renew: no
