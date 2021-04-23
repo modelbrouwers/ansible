@@ -106,3 +106,5 @@ mb_docker_registry:
 mb_docker_server:
   name: "{{ mb_docker_django_domain }}"
   aliases: []
+
+mb_docker_cronjobs: []

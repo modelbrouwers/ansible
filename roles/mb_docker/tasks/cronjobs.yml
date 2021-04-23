@@ -1,0 +1,14 @@
+---
+
+- name: Process data downloads
+  cron:
+    name: "[{{ mb_docker_hostname_suffix }}] process_data_downloads"
+    minute: "*/5"
+    job: "docker exec django-{{ mb_docker_hostname_suffix | mandatory }} src/manage.py process_data_downloads"
+
+- name: Clear data downloads
+  cron:
+    name: "[{{ mb_docker_hostname_suffix }}] clear_data_downloads"
+    minute: 0
+    hour: 1
+    job: "docker exec django-{{ mb_docker_hostname_suffix | mandatory }} src/manage.py clear_data_downloads"
