@@ -1,5 +1,0 @@
----
-
-- include: install.yml
-- include: install-extensions.yml
-- include: django-integration.yml

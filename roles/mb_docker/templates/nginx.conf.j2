@@ -1,0 +1,173 @@
+#
+# {{ ansible_managed }}
+#
+
+# Proxy to backing Docker containers
+
+upstream {{ mb_docker_nginx_prefix }}_django {
+    server 127.0.0.1:{{ mb_docker_django_port }};
+}
+
+upstream {{ mb_docker_nginx_prefix }}_phpbb {
+    server 127.0.0.1:{{ mb_docker_phpbb_port }};
+}
+
+upstream {{ mb_docker_nginx_prefix }}_shop {
+    server 127.0.0.1:{{ mb_docker_shop_port }};
+}
+
+# Redirect non-https to https
+server {
+    listen 80;
+    server_name {{ mb_docker_server.name }} {{ mb_docker_server.aliases|join(' ') }};
+    return 301 https://{{ server.name }}$request_uri;
+}
+
+# https virtual host
+server {
+    listen 443 ssl http2;
+    server_name {{ mb_docker_server.name }} {{ mb_docker_server.aliases|join(' ') }};
+
+    root {{ docroot }};
+
+    error_log {{ mb_docker_nginx_log_dir }}/error.log warn;
+    access_log  {{ mb_docker_nginx_log_dir }}/access.log main;
+
+    charset utf-8;
+
+    # SSL configuration
+    ssl_certificate {{ mb_docker_nginx_certs }}/fullchain.pem;
+    ssl_certificate_key {{ mb_docker_nginx_certs }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;  # TLSv1.3 is nginx 1.13+
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
+
+    # 180 days
+    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+
+    # gzip static files
+    gzip on;
+    gzip_min_length 1000;
+    gzip_types
+        text/css
+        text/plain
+        text/javascript
+        application/javascript
+        application/x-javascript
+        application/json;
+
+    # TODO: put statics in volume and let nginx serve them
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /index.php {
+        return 301 /winkel/;
+    }
+
+    location /robots.txt {
+    }
+
+    location /phpBB3 {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
+    }
+
+    location /phpBB3/images/ {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
+        expires max;
+    }
+
+    location /phpBB3/styles/ {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
+        expires max;
+    }
+
+    location /winkel {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
+    }
+
+    location /winkel/images/ {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
+        expires max;
+    }
+
+    location /winkel/image/ {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
+        expires max;
+    }
+
+    location / {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_django;
+    }
+
+    location /favicon.ico {
+        alias {{ docroot }}/favicon.ico;
+        expires max;
+    }
+
+    location /media/ {
+        expires 30d;
+        alias {{ mb_docker_volumes.media.symlink }}/;
+    }
+
+    location /protected/ {
+        internal;
+        alias {{ mb_docker_volumes.media_sendfile.symlink }}/;
+    }
+
+    location ~ ^/docs/ {
+        rewrite ^/docs/(.*)$ /media/docs/$1 permanent;
+    }
+
+    location /albums/coppermine/ {
+        expires max;
+        alias {{ mb_docker_volume_storage_root }}/legacy/coppermine/;
+    }
+}
+
+# Legacy Coppermine albums
+
+server {
+    listen 80;
+    server_name albums.{{ mb_docker_server.name }};
+    return 301 https://albums.{{ mb_docker_server.name }}$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name albums.{{ mb_docker_server.name }};
+    root {{ mb_docker_volume_storage_root }}/legacy/;
+
+    error_log {{ mb_docker_nginx_log_dir }}/error.log warn;
+    access_log  {{ mb_docker_nginx_log_dir }}/access.log main;
+
+    charset utf-8;
+
+    # SSL configuration
+    ssl_certificate {{ mb_docker_nginx_legacy_certs }}/fullchain.pem;
+    ssl_certificate_key {{ mb_docker_nginx_legacy_certs }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;  # TLSv1.3 is nginx 1.13+
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
+
+    # 180 days
+    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    location /coppermine/ {
+        return 301 https://{{ mb_docker_server.name }}/albums$request_uri;
+    }
+}

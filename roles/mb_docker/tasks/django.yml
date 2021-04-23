@@ -1,0 +1,64 @@
+---
+
+- name: Ensure memcached container is running
+  community.general.docker_container:
+    container_default_behavior: no_defaults
+    name: "memcached-{{ mb_docker_hostname_suffix | mandatory }}"
+    state: started
+    image: "{{ mb_docker_memcached_image }}"
+    hostname: "memcached-{{ mb_docker_hostname_suffix | mandatory }}"
+    networks:
+      - name: "{{ mb_docker_network }}"
+    network_mode: "{{ mb_docker_network }}"
+    purge_networks: yes
+    networks_cli_compatible: yes
+    privileged: no
+    restart_policy: always
+
+- name: Ensure Django container is running
+  community.general.docker_container:
+    container_default_behavior: no_defaults
+    name: "django-{{ mb_docker_hostname_suffix | mandatory }}"
+    state: started
+    image: "{{ mb_docker_django_image }}"
+    pull: yes
+    hostname: "django-{{ mb_docker_hostname_suffix | mandatory }}"
+    networks:
+      - name: "{{ mb_docker_network }}"
+    network_mode: "{{ mb_docker_network }}"
+    purge_networks: yes
+    networks_cli_compatible: yes
+    privileged: no
+    restart_policy: always
+    memory: 500M
+    memory_reservation: 100M
+    volumes:
+      - "{{ mb_docker_volumes.media.name }}:/app/media"
+      - "{{ mb_docker_volumes.media_sendfile.name }}:/app/media_sendfile"
+      - "{{ mb_docker_volumes.logs.name }}:/app/log"
+    env:
+      DJANGO_SETTINGS_MODULE: brouwers.conf.production
+      SECRET_KEY: "{{ mb_docker_django_secret_key | mandatory }}"
+      ALLOWED_HOSTS: "{{ mb_docker_django_domain }},localhost"
+      IS_HTTPS: 'yes'
+      EMAIL_HOST: "{{ mb_docker_host }}"
+      DB_HOST: "{{ mb_docker_host }}"
+      DB_NAME: "{{ mb_docker_django_db.postgres.name }}"
+      DB_USER: "{{ mb_docker_django_db.postgres.user }}"
+      DB_PASSWORD: "{{ mb_docker_django_db.postgres.password }}"
+      FORUM_DB_HOST: "{{ mb_docker_host }}"
+      FORUM_DB_NAME: "{{ mb_docker_django_db.mysql.name }}"
+      FORUM_DB_USER: "{{ mb_docker_django_db.mysql.user }}"
+      FORUM_DB_PASSWORD: "{{ mb_docker_django_db.mysql.password }}"
+      CACHE_URL: "memcached-{{ mb_docker_hostname_suffix | mandatory }}:11211"
+      SESSION_COOKIE_DOMAIN: "{{ mb_docker_django_domain }}"
+      MIBBIT_SETTINGS: "{{ mb_docker_django_mibbit_settings }}"
+      PHPBB_UID_COOKIE: "{{ mb_docker_phpbb_uid_cookie }}"
+      DEFAULT_FROM_EMAIL: "{{ mb_docker_default_from_email }}"
+      SENTRY_DSN: "{{ mb_docker_django_sentry_dsn }}"
+    ports:
+      - "127.0.0.1:{{ mb_docker_django_port }}:8000"
+    comparisons:
+      env: strict
+      volumes: strict
+      ports: strict

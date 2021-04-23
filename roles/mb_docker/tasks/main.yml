@@ -1,0 +1,8 @@
+---
+
+- import_tasks: networks.yml
+- import_tasks: volumes.yml
+- import_tasks: django.yml
+- import_tasks: forum.yml
+- import_tasks: shop.yml
+- import_tasks: set_facts.yml

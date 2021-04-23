@@ -1,4 +1,0 @@
----
-
-forum_path: "{{ docroot }}/phpBB3"
-django_src: "{{ ansible_env.HOME }}/django/{{ env }}"

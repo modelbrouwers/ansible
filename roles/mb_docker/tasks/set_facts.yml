@@ -1,0 +1,5 @@
+---
+
+- name: Set the absolute path to the nginx template
+  set_fact:
+    mb_docker_nginx_template: "{{ role_path }}/templates/nginx.conf.j2"

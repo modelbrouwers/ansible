@@ -1,0 +1,50 @@
+---
+
+- name: Ensure Docker volumes exist
+  community.general.docker_volume:
+    name: "{{ item.value.name }}"
+    state: present
+    driver: local
+  loop: "{{ mb_docker_volumes|dict2items }}"
+  register: mb_docker_vols
+
+- name: Ensure target directories exist
+  file:
+    path: "{{ result.item.value.symlink }}"
+    state: directory
+    owner: "{{ result.item.value.owner | default('root') }}"
+    group: "{{ result.item.value.group | default('root') }}"
+    mode: "{{ result.item.value.perms | mandatory }}"
+  when: result.item.value.symlink is defined
+  loop: "{{ mb_docker_vols.results }}"
+  loop_control:
+    loop_var: result
+
+- name: Symlink docker volumes to custom storage location
+  file:
+    path: "{{ result.volume.Mountpoint }}"
+    src: "{{ result.item.value.symlink }}"
+    state: link
+    force: yes
+  when: result.item.value.symlink is defined
+  loop: "{{ mb_docker_vols.results }}"
+  loop_control:
+    loop_var: result
+
+- name: Set fs permissions on non-symlink docker volumes
+  file:
+    path: "{{ result.volume.Mountpoint }}"
+    state: directory
+    owner: "{{ result.item.value.owner | default('root') }}"
+    group: "{{ result.item.value.group | default('root') }}"
+    mode: "{{ result.item.value.perms | mandatory }}"
+  when: result.item.value.symlink is not defined
+  loop: "{{ mb_docker_vols.results }}"
+  loop_control:
+    loop_var: result
+
+- name: Ensure nginx belongs to Django user group
+  user:
+    name: "{{ mb_docker_nginx_user }}"
+    groups: "{{ mb_docker_django_group }}"
+    append: yes
