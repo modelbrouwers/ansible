@@ -39,7 +39,7 @@
     env:
       DJANGO_SETTINGS_MODULE: brouwers.conf.production
       SECRET_KEY: "{{ mb_docker_django_secret_key | mandatory }}"
-      ALLOWED_HOSTS: "{{ mb_docker_django_domain }},localhost"
+      ALLOWED_HOSTS: "{{ mb_docker_django_allowed_hosts | join(',') }}"
       IS_HTTPS: 'yes'
       EMAIL_HOST: "{{ mb_docker_host }}"
       DB_HOST: "{{ mb_docker_host }}"
@@ -51,7 +51,7 @@
       FORUM_DB_USER: "{{ mb_docker_django_db.mysql.user }}"
       FORUM_DB_PASSWORD: "{{ mb_docker_django_db.mysql.password }}"
       CACHE_URL: "memcached-{{ mb_docker_hostname_suffix | mandatory }}:11211"
-      SESSION_COOKIE_DOMAIN: "{{ mb_docker_django_domain }}"
+      SESSION_COOKIE_DOMAIN: "{{ mb_docker_django_session_cookie_domain }}"
       MIBBIT_SETTINGS: "{{ mb_docker_django_mibbit_settings }}"
       PHPBB_UID_COOKIE: "{{ mb_docker_phpbb_uid_cookie }}"
       DEFAULT_FROM_EMAIL: "{{ mb_docker_default_from_email }}"

@@ -62,6 +62,10 @@ mb_docker_memcached_image: index.docker.io/library/memcached:1.6
 
 mb_docker_django_image: index.docker.io/modelbrouwers/brouwers:latest
 mb_docker_django_domain: django.modelbrouwers.nl
+mb_docker_django_allowed_hosts:
+  - "{{ mb_docker_django_domain }}"
+  - localhost
+mb_docker_django_session_cookie_domain: "{{ mb_docker_django_domain }}"
 mb_docker_django_secret_key: ''
 mb_docker_django_db:
   postgres:
