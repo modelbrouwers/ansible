@@ -13,6 +13,13 @@ mb_docker_django_user: modelbrouw
 mb_docker_django_group: "{{ mb_docker_django_user }}"
 
 mb_docker_volumes:
+  static:
+    name: "{{ mb_docker_volume_prefix }}-static"
+    perms: o=rwx,g=rx,o=rx
+    owner: "{{ mb_docker_django_user }}"
+    group: "{{ mb_docker_django_group }}"
+    symlink: "{{ mb_docker_volume_storage_root }}/static"
+
   media:
     name: "{{ mb_docker_volume_prefix }}-media"
     perms: o=rwx,g=rx,o=

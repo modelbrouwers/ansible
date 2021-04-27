@@ -114,6 +114,11 @@ server {
         expires max;
     }
 
+    location /static/ {
+        expires max;
+        alias {{ mb_docker_volumes.static.symlink }}/;
+    }
+
     location /media/ {
         expires 30d;
         alias {{ mb_docker_volumes.media.symlink }}/;

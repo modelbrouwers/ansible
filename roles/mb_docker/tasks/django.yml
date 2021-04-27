@@ -33,6 +33,7 @@
     memory: 500M
     memory_reservation: 100M
     volumes:
+      - "{{ mb_docker_volumes.static.name }}:/app/static_root"
       - "{{ mb_docker_volumes.media.name }}:/app/media"
       - "{{ mb_docker_volumes.media_sendfile.name }}:/app/media_sendfile"
       - "{{ mb_docker_volumes.logs.name }}:/app/log"
@@ -56,6 +57,7 @@
       PHPBB_UID_COOKIE: "{{ mb_docker_phpbb_uid_cookie }}"
       DEFAULT_FROM_EMAIL: "{{ mb_docker_default_from_email }}"
       SENTRY_DSN: "{{ mb_docker_django_sentry_dsn }}"
+      STATIC_ROOT_VOLUME: /app/static_root
     ports:
       - "127.0.0.1:{{ mb_docker_django_port }}:8000"
     comparisons:
