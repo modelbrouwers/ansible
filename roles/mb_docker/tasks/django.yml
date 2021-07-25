@@ -15,6 +15,21 @@
     privileged: no
     restart_policy: always
 
+- name: Ensure redis container is running
+  community.general.docker_container:
+    container_default_behavior: no_defaults
+    name: "redis-{{ mb_docker_hostname_suffix | mandatory }}"
+    state: started
+    image: "{{ mb_docker_redis_image }}"
+    hostname: "redis-{{ mb_docker_hostname_suffix | mandatory }}"
+    networks:
+      - name: "{{ mb_docker_network }}"
+    network_mode: "{{ mb_docker_network }}"
+    purge_networks: yes
+    networks_cli_compatible: yes
+    privileged: no
+    restart_policy: always
+
 - name: Ensure Django container is running
   community.general.docker_container:
     container_default_behavior: no_defaults

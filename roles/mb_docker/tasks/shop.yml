@@ -31,6 +31,7 @@
       DB_USERNAME: "{{ mb_docker_shop_db.user }}"
       DB_PASSWORD: "{{ mb_docker_shop_db.password }}"
       SELF_ADDRESS: "{{ mb_docker_shop_self_address }}"
+      REDIS_URL: "{{ mb_docker_shop_redis_url }}"
     ports:
       - "127.0.0.1:{{ mb_docker_shop_port }}:80"
     comparisons:

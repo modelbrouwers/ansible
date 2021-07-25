@@ -38,9 +38,10 @@
       name: "{{ server.name }}"
       aliases: "{{ server.aliases }}"
 
-    certbot_install_from_source: yes
-    certbot_auto_renew: no
-    certbot_create_if_missing: yes
+    certbot_install_from_source: true
+    certbot_keep_updated: false
+    certbot_auto_renew: false
+    certbot_create_if_missing: true
     certbot_admin_email: sergei@modelbrouwers.nl
     certbot_certs:
       - domains: "{{ [mb_docker_server.name] + mb_docker_server.aliases }}"
@@ -60,7 +61,7 @@
         - nginx
     - role: nginx
       vars:
-        nginx_install_ssl: no  # certbot
+        nginx_install_ssl: false  # certbot
         nginx_prefix: "{{ mb_docker_nginx_prefix }}"
         nginx_vhost_template: "{{ mb_docker_nginx_template }}"
       tags:

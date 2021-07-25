@@ -7,6 +7,8 @@ mb_docker_network: mb_docker
 mb_docker_volume_prefix: mb_docker
 mb_docker_volume_storage_root: /mnt/bigstorage
 
+mb_docker_version: latest
+
 mb_docker_nginx_user: www-data
 mb_docker_apache_user: "{{ mb_docker_nginx_user }}"
 mb_docker_django_user: modelbrouw
@@ -66,8 +68,9 @@ mb_docker_hostname_suffix: ''
 mb_docker_default_from_email: 'webmaster@localhost'
 
 mb_docker_memcached_image: index.docker.io/library/memcached:1.6
+mb_docker_redis_image: index.docker.io/library/redis:6
 
-mb_docker_django_image: index.docker.io/modelbrouwers/brouwers:latest
+mb_docker_django_image: "index.docker.io/modelbrouwers/brouwers:{{ mb_docker_version }}"
 mb_docker_django_domain: django.modelbrouwers.nl
 mb_docker_django_allowed_hosts:
   - "{{ mb_docker_django_domain }}"
@@ -87,7 +90,7 @@ mb_docker_django_port: 8000
 mb_docker_django_mibbit_settings: ''
 mb_docker_django_sentry_dsn: ''
 
-mb_docker_phpbb_image: index.docker.io/modelbrouwers/phpbb:latest
+mb_docker_phpbb_image: "index.docker.io/modelbrouwers/phpbb:{{ mb_docker_version }}"
 mb_docker_phpbb_uid_cookie: 'phpbb3_u'
 mb_docker_phpbb_port: 8001
 mb_docker_phpbb_db:
@@ -101,13 +104,14 @@ mb_docker_phpbb_db:
     password: ''
 mb_docker_phpbb_sentry_dsn: ''
 
-mb_docker_shop_image: docker.modelbrouwers.nl/modelbrouwers/winkel:latest
+mb_docker_shop_image: "docker.modelbrouwers.nl/modelbrouwers/winkel:{{ mb_docker_version }}"
 mb_docker_shop_db:
   name: mysql
   user: root
   password: ''
 mb_docker_shop_port: 8002
 mb_docker_shop_self_address: https://shop.modelbrouwers.nl
+mb_docker_shop_redis_url: "redis-{{ mb_docker_hostname_suffix | mandatory }}:6379?database=2"
 
 mb_docker_registry:
   registry_url: docker.modelbrouwers.nl
