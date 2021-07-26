@@ -8,11 +8,9 @@
 # - [x] Virtual domains & forwards migrated
 # - [x] Mailboxes correctly migrated & functional
 # - [x] Ensure docker container IP adresses are still in mynetworks
-#     - 172.17.0.2
-#     - 172.17.0.3
-#     - 172.17.0.4
+#     - 172.17.0.1/11
 # - [x] inet_interfaces = localhost, 172.17.0.1
-# - [ ] webmail
+# - [x] webmail
 # - [ ] Maildir default dirs
 
 - name: Set up the mailserver for outgoing and incoming e-mail
@@ -24,17 +22,26 @@
 
   vars:
     postfixer_postgresql_version: '9.6'
+    roundcube_postgresql_version: '9.6'
 
   roles:
     - role: geerlingguy.docker
     - role: geerlingguy.certbot
     - role: postfixer
     - role: nginx
-      tags:
-        - nginx
+      vars:
+        nginx_install_ssl: false
+        nginx_vhost_template: proxy.j2
+        nginx_hostname: "{{ postfixer_hostname }}"
+        nginx_proxy_port: "{{ postfixer_port }}"
     - role: postfix
-      tags:
-        - postfix
     - role: dovecot
-      tags:
-        - postfix
+    - role: roundcube
+    - role: nginx
+      vars:
+        nginx_prefix: roundcube
+        nginx_install_ssl: false
+        nginx_vhost_template: proxy.j2
+        nginx_hostname: "{{ _roundcube_domains|join(' ') }}"
+        nginx_ssl_host: "{{ _roundcube_domains[0] }}"
+        nginx_proxy_port: "{{ _roundcube_container_port }}"

@@ -8,4 +8,4 @@ modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3 mb_docker_version=2
 old.modelbrouwers.nl ansible_python_interpreter=/opt/python2.7/bin/python venv_command=/opt/python2.7/bin/virtualenv
 
 [mail]
-geralt.modelbrouwers.nl
+geralt.modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3

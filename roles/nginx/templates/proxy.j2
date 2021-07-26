@@ -6,7 +6,7 @@ upstream {{ nginx_prefix }}_web {
 server {
     listen 80;
     server_name {{ nginx_hostname }};
-    return 301 https://{{ nginx_hostname }}$request_uri;
+    return 301 https://$host$request_uri;
 }
 
 

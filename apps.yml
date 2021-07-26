@@ -4,6 +4,9 @@
   hosts: web
   remote_user: root
 
+  vars_files:
+    - vars/certbot.yml
+
   vars:
     docroot: "/home/modelbrouw/public_html{{ '/staging' if env == 'staging' else '' }}"
 
@@ -38,18 +41,10 @@
       name: "{{ server.name }}"
       aliases: "{{ server.aliases }}"
 
-    certbot_install_from_source: true
-    certbot_keep_updated: false
-    certbot_auto_renew: false
-    certbot_create_if_missing: true
-    certbot_admin_email: sergei@modelbrouwers.nl
     certbot_certs:
       - domains: "{{ [mb_docker_server.name] + mb_docker_server.aliases }}"
       - domains:
         - "albums.{{ mb_docker_server.name }}"
-
-    certbot_create_standalone_stop_services:
-      - nginx
 
   roles:
     - role: geerlingguy.docker

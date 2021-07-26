@@ -1,0 +1,41 @@
+---
+
+# Creates the database for the application
+
+- name: Ensure postgres + deps are installed
+  apt:
+    name:
+    - postgresql
+    - python3-psycopg2
+
+- name: Create application database user
+  postgresql_user:
+    name: "{{ roundcube_db.user }}"
+    password: "{{ roundcube_db.password }}"
+    role_attr_flags: NOCREATEDB,NOSUPERUSER,NOCREATEROLE
+  become: true
+  become_user: postgres
+
+- name: Create application database
+  postgresql_db:
+    name: "{{ roundcube_db.name }}"
+    encoding: 'UTF-8'
+    owner: "{{ roundcube_db.user }}"
+  become: true
+  become_user: postgres
+
+- name: Allow local (unix socket) password access
+  lineinfile:
+    dest: "/etc/postgresql/{{ roundcube_postgresql_version }}/main/pg_hba.conf"
+    line: "local   {{ roundcube_db.name }}    {{ roundcube_db.user }}    md5"
+    insertbefore: "^# \"local\" is for Unix domain socket connections only"
+  notify:
+    - reload postgres
+
+- name: Allow IPv4 (tcp) password access
+  lineinfile:
+    dest: "/etc/postgresql/{{ roundcube_postgresql_version }}/main/pg_hba.conf"
+    line: "host    {{ roundcube_db.name }}    {{ roundcube_db.user }}  172.17.0.1/16  md5"
+    insertbefore: "^# IPv6 local connections"
+  notify:
+    - reload postgres

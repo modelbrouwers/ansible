@@ -1,0 +1,68 @@
+---
+
+# Deploy the roundcube app with docker
+
+
+- name: Ensure a separate network exists
+  community.docker.docker_network:
+    name: roundcube
+
+- name: Create a volume for the files
+  community.docker.docker_volume:
+    name: roundcube-data
+
+- name: Figure out if a port is bound already
+  community.docker.docker_container_info:
+    name: roundcube
+  register: _roundcube_container_info
+
+- set_fact:
+    _roundcube_container_port: "{{ roundcube_port_range }}"
+  when: _roundcube_container_info.container == None
+
+- set_fact:
+    _roundcube_container_port: "{{ _roundcube_container_info.container.NetworkSettings.Ports['80/tcp'][0].HostPort }}"
+  when: _roundcube_container_info.container != None
+
+- name: Ensure app container runs
+  community.docker.docker_container:
+    container_default_behavior: no_defaults
+    name: roundcube
+    image: "{{ roundcube_image }}"
+    pull: true
+    hostname: roundcube
+    state: started
+    restart: false
+    restart_policy: always
+    networks:
+      - name: roundcube
+    network_mode: roundcube
+    networks_cli_compatible: true
+    purge_networks: true
+    volumes:
+      # logs
+      - "roundcube-data:/var/www/html"
+    env:
+      ROUNDCUBEMAIL_DEFAULT_HOST: "{{ roundcube_imap.host }}"
+      ROUNDCUBEMAIL_DEFAULT_PORT: "{{ roundcube_imap.port }}"
+      ROUNDCUBEMAIL_SMTP_SERVER: "{{ roundcube_smtp.host }}"
+      ROUNDCUBEMAIL_SMTP_PORT: "{{ roundcube_smtp.port }}"
+
+      ROUNDCUBEMAIL_DB_TYPE: pgsql
+      ROUNDCUBEMAIL_DB_HOST: "{{ roundcube_db.host }}"
+      ROUNDCUBEMAIL_DB_PORT: "{{ roundcube_db.port | string }}"
+      ROUNDCUBEMAIL_DB_USER: "{{ roundcube_db.user }}"
+      ROUNDCUBEMAIL_DB_PASSWORD: "{{ roundcube_db.password }}"
+      ROUNDCUBEMAIL_DB_NAME: "{{ roundcube_db.name }}"
+
+    published_ports:
+      - "127.0.0.1:{{ _roundcube_container_port }}:80"
+    comparisons:
+      env: strict
+      networks: strict
+
+  register: _roundcube_container
+
+- set_fact:
+    _roundcube_container_port: "{{ _roundcube_container.container.NetworkSettings.Ports['80/tcp'][0].HostPort }}"
+  when: _roundcube_container.changed

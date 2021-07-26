@@ -1,0 +1,23 @@
+---
+
+roundcube_imap:
+  host: ssl://mail.example.com
+  port: 993
+
+roundcube_smtp:
+  host: tls://mail.example.com
+  port: 587
+
+roundcube_port_range: 11000-12000
+
+roundcube_version: 1.4.x-apache  # see https://hub.docker.com/r/roundcube/roundcubemail/tags
+roundcube_image: "docker.io/roundcube/roundcubemail:{{ roundcube_version }}"
+
+roundcube_db:
+  host: localhost
+  port: 5432
+  name: roundcube
+  user: roundcube
+  password: roundcube
+
+roundcube_postgresql_version: 10
