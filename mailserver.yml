@@ -21,8 +21,8 @@
     - vars/certbot.yml
 
   vars:
-    postfixer_postgresql_version: '9.6'
-    roundcube_postgresql_version: '9.6'
+    postfixer_postgresql_version: '11'
+    roundcube_postgresql_version: '11'
 
   roles:
     - role: geerlingguy.docker
