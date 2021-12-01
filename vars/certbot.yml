@@ -1,7 +1,7 @@
 ---
 
 certbot_admin_email: sergei@modelbrouwers.nl
-certbot_install_from_source: true
+certbot_install_method: snap
 certbot_keep_updated: false
 certbot_auto_renew: false
 certbot_create_if_missing: true
