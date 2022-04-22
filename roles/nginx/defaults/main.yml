@@ -12,3 +12,5 @@ nginx_vhost_template: vhost.conf.j2
 nginx_hostname: localhost
 nginx_proxy_port: 8000
 nginx_ssl_host: "{{ nginx_hostname }}"
+
+blocked_user_agents: []

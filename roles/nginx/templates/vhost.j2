@@ -45,6 +45,12 @@ server {
         application/x-javascript
         application/json;
 
+    {% for ua in blocked_user_agents %}
+    if ($http_user_agent = "{{ ua }}") {
+        return 403;
+    }
+    {% endif %}
+
     set $maintenance off;
     if (-f $document_root/maintenance.html ) {
         set $maintenance on;
