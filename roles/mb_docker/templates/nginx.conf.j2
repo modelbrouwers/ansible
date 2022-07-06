@@ -57,7 +57,11 @@ server {
         application/x-javascript
         application/json;
 
-    # TODO: put statics in volume and let nginx serve them
+    {% for ua in blocked_user_agents %}
+    if ($http_user_agent = "{{ ua }}") {
+        return 403;
+    }
+    {% endfor %}
 
     location ~ /\.ht {
         deny all;
