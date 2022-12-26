@@ -2,7 +2,7 @@
 db.modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3
 
 [web]
-modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3 mb_docker_version=2.3.0
+modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3 mb_docker_version=2.3.1
 
 [mail]
 geralt.modelbrouwers.nl ansible_python_interpreter=/usr/bin/python3
