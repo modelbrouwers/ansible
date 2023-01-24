@@ -4,9 +4,9 @@
 #
 #    pip-compile --no-emit-index-url requirements.in
 #
-ansible==5.6.0
+ansible==7.0.0
     # via -r requirements.in
-ansible-core==2.12.4
+ansible-core==2.14.1
     # via ansible
 cffi==1.14.5
     # via cryptography
@@ -14,9 +14,9 @@ click==7.1.2
     # via pip-tools
 cryptography==3.4.7
     # via ansible-core
-jinja2==2.11.3
+jinja2==3.1.2
     # via ansible-core
-markupsafe==1.1.1
+markupsafe==2.1.2
     # via jinja2
 packaging==20.9
     # via ansible-core
