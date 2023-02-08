@@ -12,7 +12,7 @@ cffi==1.14.5
     # via cryptography
 click==7.1.2
     # via pip-tools
-cryptography==3.4.7
+cryptography==39.0.1
     # via ansible-core
 jinja2==2.11.3
     # via ansible-core
