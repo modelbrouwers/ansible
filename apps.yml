@@ -16,6 +16,7 @@
 
     mb_docker_hostname_suffix: "mb-{{ env }}"
     mb_docker_default_from_email: "{{ django.from_email }}"
+    mb_docker_email_contact_notification: "{{ django.contact_email }}"
 
     mb_docker_django_domain: "{{ server.name }}"
     mb_docker_django_secret_key: "{{ django.secret_key }}"
