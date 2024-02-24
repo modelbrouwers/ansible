@@ -23,6 +23,7 @@
     mb_docker_django_db:
       postgres: "{{ django_db }}"
       mysql: "{{ forum_db }}"
+      legacy_shop: "{{ shop_db }}"
     mb_docker_django_port: "{{ uwsgi.port }}"
     mb_docker_django_mibbit_settings: "{{ mibbit_settings }}"
     mb_docker_django_sentry_dsn: "{{ sentry.django }}"
