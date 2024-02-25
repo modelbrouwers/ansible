@@ -91,6 +91,11 @@ server {
         expires max;
     }
 
+    location /winkel/contact {
+        {% include 'includes/proxy.j2' %}
+        proxy_pass http://{{ mb_docker_nginx_prefix }}_django;
+    }
+
     location /winkel {
         {% include 'includes/proxy.j2' %}
         proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
