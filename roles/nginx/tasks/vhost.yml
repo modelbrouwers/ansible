@@ -16,15 +16,9 @@
     group: www-data
   remote_user: root
 
-- name: Ensure the docroot exists
-  file:
-    path: "{{ docroot }}"
-    state: directory
-  when: nginx_vhost_template == 'vhost.j2'
-
 - name: Install the Nginx config file
   template:
-    src: "{{ nginx_vhost_template }}"
+    src: "{{ nginx_vhost_template|mandatory }}"
     dest: "/etc/nginx/sites-available/{{ nginx_prefix }}.conf"
   remote_user: root
   notify:

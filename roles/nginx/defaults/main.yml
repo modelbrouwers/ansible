@@ -2,15 +2,8 @@
 
 env: staging
 
-nginx_install_ssl: yes
-
 nginx_prefix: "{{ user }}.{{ env }}"
 
-nginx_vhost_template: vhost.conf.j2
-
-# proxy config
-nginx_hostname: localhost
-nginx_proxy_port: 8000
-nginx_ssl_host: "{{ nginx_hostname }}"
+# nginx_vhost_template: ''
 
 blocked_user_agents: []
