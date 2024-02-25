@@ -5,8 +5,4 @@ certbot_install_method: snap
 certbot_keep_updated: false
 certbot_auto_renew: false
 certbot_create_if_missing: true
-certbot_create_standalone_stop_services:
-  - nginx
-certbot_auto_renew_options: >
-  --nginx --quiet --no-self-upgrade
-  --post-hook 'service nginx reload && service postfix reload && service dovecot reload'
+certbot_create_standalone_stop_services: []
