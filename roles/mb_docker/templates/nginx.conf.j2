@@ -91,6 +91,10 @@ server {
         expires max;
     }
 
+    location ~* ^/winkel/(en|de)/contact/? {
+        return 301 /winkel/contact;
+    }
+
     location /winkel/contact {
         {% include 'includes/proxy.j2' %}
         proxy_pass http://{{ mb_docker_nginx_prefix }}_django;
