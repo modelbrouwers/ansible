@@ -70,6 +70,7 @@
       LEGACY_SHOP_DB_NAME: "{{ mb_docker_django_db.legacy_shop.name }}"
       LEGACY_SHOP_DB_USER: "{{ mb_docker_django_db.legacy_shop.user }}"
       LEGACY_SHOP_DB_PASSWORD: "{{ mb_docker_django_db.legacy_shop.password }}"
+      LOG_STDOUT: 'yes'
       CACHE_URL: "memcached-{{ mb_docker_hostname_suffix | mandatory }}:11211"
       SESSION_COOKIE_DOMAIN: "{{ mb_docker_django_session_cookie_domain }}"
       MIBBIT_SETTINGS: "{{ mb_docker_django_mibbit_settings }}"

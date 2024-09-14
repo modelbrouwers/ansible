@@ -6,7 +6,7 @@
     username: "{{ mb_docker_registry.username }}"
     password: "{{ mb_docker_registry.password }}"
 
-- name: Ensure phpBB container is running
+- name: Ensure shop container is running
   community.general.docker_container:
     container_default_behavior: no_defaults
     name: "shop-{{ mb_docker_hostname_suffix | mandatory }}"
@@ -30,6 +30,7 @@
       DB_NAME: "{{ mb_docker_shop_db.name }}"
       DB_USERNAME: "{{ mb_docker_shop_db.user }}"
       DB_PASSWORD: "{{ mb_docker_shop_db.password }}"
+      DB_PREFIX: oc_
       SELF_ADDRESS: "{{ mb_docker_shop_self_address }}"
       REDIS_URL: "{{ mb_docker_shop_redis_url }}"
     ports:

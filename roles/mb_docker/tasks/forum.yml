@@ -25,10 +25,12 @@
       PHPBB3_DB_NAME: "{{ mb_docker_phpbb_db.mysql.name }}"
       PHPBB3_DB_USER: "{{ mb_docker_phpbb_db.mysql.user }}"
       PHPBB3_DB_PASSWORD: "{{ mb_docker_phpbb_db.mysql.password }}"
+      PHPBB3_TABLE_PREFIX: phpbb_
       PHPBB3_DJANGO_DB_HOST: "{{ mb_docker_host }}"
       PHPBB3_DJANGO_DB_NAME: "{{ mb_docker_phpbb_db.postgres.name }}"
       PHPBB3_DJANGO_DB_USER: "{{ mb_docker_phpbb_db.postgres.user }}"
       PHPBB3_DJANGO_DB_PASSWORD: "{{ mb_docker_phpbb_db.postgres.password }}"
+      PHPBB3_DJANGO_SESSION_COOKIE_NAME: mbsessionid
       MEMCACHED_HOST: "memcached-{{ mb_docker_hostname_suffix | mandatory }}"
       RAVEN_DSN: "{{ mb_docker_phpbb_sentry_dsn }}"
     ports:

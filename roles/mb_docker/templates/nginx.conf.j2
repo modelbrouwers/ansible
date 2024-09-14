@@ -63,6 +63,14 @@ server {
     }
     {% endfor %}
 
+    if ($http_user_agent ~* amazonbot) {
+        return 403;
+    }
+
+    if ($http_user_agent ~* claudebot) {
+        return 403;
+    }
+
     location ~ /\.ht {
         deny all;
     }
