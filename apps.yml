@@ -13,6 +13,7 @@
     mb_docker_network: "modelbrouwers-{{ env }}"
     mb_docker_volume_prefix: "mb-{{ env }}"
     mb_docker_volume_storage_root: "/mnt/bigstorage/modelbrouw/{{ env }}"
+    mb_docker_geoip_database_path: "/mnt/bigstorage/modelbrouw/GeoIP/GeoLite2-Country.mmdb"
 
     mb_docker_hostname_suffix: "mb-{{ env }}"
     mb_docker_default_from_email: "{{ django.from_email }}"
