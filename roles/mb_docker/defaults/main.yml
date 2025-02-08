@@ -128,3 +128,5 @@ mb_docker_server:
   aliases: []
 
 mb_docker_cronjobs: []
+
+mb_docker_geoip_database_path: /tmp/geoip/

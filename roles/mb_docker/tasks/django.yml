@@ -52,6 +52,7 @@
       - "{{ mb_docker_volumes.media.name }}:/app/media"
       - "{{ mb_docker_volumes.media_sendfile.name }}:/app/media_sendfile"
       - "{{ mb_docker_volumes.logs.name }}:/app/log"
+      - "{{ mb_docker_geoip_database_path }}:/GeoIP/"
     env:
       DJANGO_SETTINGS_MODULE: brouwers.conf.production
       SECRET_KEY: "{{ mb_docker_django_secret_key | mandatory }}"
@@ -83,7 +84,7 @@
       RELEASE: "{{ mb_docker_version }}"
       RECAPTCHA_PUBLIC_KEY: "{{ mb_docker_recaptcha_public_key }}"
       RECAPTCHA_PRIVATE_KEY: "{{ mb_docker_recaptcha_private_key }}"
-      GEOIP_DATABASE_PATH: "{{ mb_docker_geoip_database_path }}"
+      GEOIP_DATABASE_PATH: "/GeoIP/GeoLite2-Country.mmdb"
     ports:
       - "127.0.0.1:{{ mb_docker_django_port }}:8000"
     comparisons:
