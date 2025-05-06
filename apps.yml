@@ -50,7 +50,7 @@
         - "albums.{{ mb_docker_server.name }}"
 
   roles:
-    - role: geerlingguy.docker
+    # - role: geerlingguy.docker
     - role: mb_docker
       tags:
         - apps
