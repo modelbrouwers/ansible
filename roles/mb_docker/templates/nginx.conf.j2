@@ -2,6 +2,9 @@
 # {{ ansible_managed }}
 #
 
+# Rate limiting
+limit_req_zone $binary_remote_addr zone=mb_forum:1m rate=2r/s;
+
 # Proxy to backing Docker containers
 
 upstream {{ mb_docker_nginx_prefix }}_django {
@@ -63,6 +66,10 @@ server {
     }
     {% endfor %}
 
+    if ($http_user_agent ~* "Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/537.36 \(KHTML, like Gecko\)") {
+        return 403;
+    }
+
     if ($http_user_agent ~* amazonbot) {
         return 403;
     }
@@ -85,6 +92,8 @@ server {
     location /phpBB3 {
         {% include 'includes/proxy.j2' %}
         proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
+        limit_req zone=mb_forum burst=5;
+        limit_req_status 429;
     }
 
     location /phpBB3/images/ {
