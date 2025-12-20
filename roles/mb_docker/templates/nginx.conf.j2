@@ -1,8 +1,6 @@
 #
 # {{ ansible_managed }}
 #
-
-# Rate limiting
 limit_req_zone $binary_remote_addr zone=mb_forum:1m rate=2r/s;
 
 # Proxy to backing Docker containers
@@ -38,16 +36,19 @@ server {
 
     charset utf-8;
 
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload" always;
+
     # SSL configuration
     ssl_certificate {{ mb_docker_nginx_certs }}/fullchain.pem;
     ssl_certificate_key {{ mb_docker_nginx_certs }}/privkey.pem;
-    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;  # TLSv1.3 is nginx 1.13+
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
-    ssl_prefer_server_ciphers on;
-    ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4 ";
-
-    # 180 days
-    add_header Strict-Transport-Security "max-age=15552000; includeSubdomains; preload";
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ecdh_curve X25519:prime256v1:secp384r1;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+    ssl_session_tickets off;
 
     # gzip static files
     gzip on;
@@ -60,23 +61,11 @@ server {
         application/x-javascript
         application/json;
 
-    {% for ua in blocked_user_agents %}
-    if ($http_user_agent = "{{ ua }}") {
+    {%- for blocked_ui in blocked_user_agents %}
+    if ($http_user_agent {{ blocked_ui.operator }} "{{ blocked_ui.ua }}") {
         return 403;
     }
     {% endfor %}
-
-    if ($http_user_agent ~* "Mozilla/5.0 \(Macintosh; Intel Mac OS X 10_15_7\) AppleWebKit/537.36 \(KHTML, like Gecko\)") {
-        return 403;
-    }
-
-    if ($http_user_agent ~* amazonbot) {
-        return 403;
-    }
-
-    if ($http_user_agent ~* claudebot) {
-        return 403;
-    }
 
     location ~ /\.ht {
         deny all;
@@ -86,11 +75,9 @@ server {
         return 301 /winkel/;
     }
 
-    location /robots.txt {
-    }
-
     location /phpBB3 {
         {% include 'includes/proxy.j2' %}
+
         proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
         limit_req zone=mb_forum burst=5;
         limit_req_status 429;
@@ -98,6 +85,7 @@ server {
 
     location /phpBB3/images/ {
         {% include 'includes/proxy.j2' %}
+
         proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
         expires max;
     }
@@ -130,12 +118,14 @@ server {
 
     location /winkel/image/ {
         {% include 'includes/proxy.j2' %}
+
         proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
         expires max;
     }
 
     location / {
         {% include 'includes/proxy.j2' %}
+
         proxy_pass http://{{ mb_docker_nginx_prefix }}_django;
     }
 
