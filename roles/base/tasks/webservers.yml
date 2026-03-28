@@ -3,6 +3,14 @@
 - name: Install nginx
   apt: name=nginx state=present
 
+- name: Install libgeoip for nginx module
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libgeoip-dev
+    - libnginx-mod-http-geoip2
+
 - name: Set main config files
   copy:
     src: "nginx/{{ item }}"

@@ -3,6 +3,21 @@
 #
 limit_req_zone $binary_remote_addr zone=mb_forum:1m rate=2r/s;
 
+##
+# Only rate-limit traffic NOT from NL or BE
+# Empty key = request is not accounted by limit_req_zone
+##
+map $geoip2_country_code $country_aware_remote_addr {
+    NL      "";
+    BE      "";
+    default $binary_remote_addr;
+}
+
+##
+# Separate limiter for foreign IPs
+##
+limit_req_zone $country_aware_remote_addr zone=mb_by_country:10m rate=10r/m;
+
 # Proxy to backing Docker containers
 
 upstream {{ mb_docker_nginx_prefix }}_django {
@@ -28,6 +43,9 @@ server {
 server {
     listen 443 ssl http2;
     server_name {{ mb_docker_server.name }} {{ mb_docker_server.aliases|join(' ') }};
+
+    limit_req zone=mb_by_country burst=15 nodelay;
+    limit_req_status 429;
 
     root {{ docroot }};
 
