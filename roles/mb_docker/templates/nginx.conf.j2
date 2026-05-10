@@ -18,6 +18,8 @@ map $geoip2_country_code $country_aware_remote_addr {
 ##
 limit_req_zone $country_aware_remote_addr zone=mb_by_country:10m rate=10r/m;
 
+limit_req_zone $binary_remote_addr zone=static_assets rate=20r/s;
+
 # Proxy to backing Docker containers
 
 upstream {{ mb_docker_nginx_prefix }}_django {
@@ -106,6 +108,7 @@ server {
 
         proxy_pass http://{{ mb_docker_nginx_prefix }}_phpbb;
         expires max;
+        limit_req zone=static_assets burst=15;
     }
 
     location /phpBB3/styles/ {
@@ -131,6 +134,7 @@ server {
     location /winkel/images/ {
         {% include 'includes/proxy.j2' %}
         proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
+        limit_req zone=static_assets burst=15;
         expires max;
     }
 
@@ -138,6 +142,7 @@ server {
         {% include 'includes/proxy.j2' %}
 
         proxy_pass http://{{ mb_docker_nginx_prefix }}_shop;
+        limit_req zone=static_assets burst=15;
         expires max;
     }
 
@@ -155,11 +160,13 @@ server {
     location /static/ {
         expires max;
         alias {{ mb_docker_volumes.static.symlink }}/;
+        limit_req zone=static_assets burst=15;
     }
 
     location /media/ {
         expires 30d;
         alias {{ mb_docker_volumes.media.symlink }}/;
+        limit_req zone=static_assets burst=15;
     }
 
     location /protected/ {
@@ -169,11 +176,13 @@ server {
 
     location ~ ^/docs/ {
         rewrite ^/docs/(.*)$ /media/docs/$1 permanent;
+        limit_req zone=static_assets burst=15;
     }
 
     location /albums/coppermine/ {
         expires max;
         alias {{ mb_docker_volume_storage_root }}/legacy/coppermine/;
+        limit_req zone=static_assets burst=15;
     }
 }
 
