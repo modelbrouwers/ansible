@@ -69,7 +69,7 @@ mb_docker_default_from_email: 'webmaster@localhost'
 mb_docker_email_contact_notification: 'webmaster@localhost'
 
 mb_docker_memcached_image: index.docker.io/library/memcached:1.6
-mb_docker_redis_image: index.docker.io/library/redis:6
+mb_docker_redis_image: index.docker.io/library/redis:8
 
 mb_docker_django_image: "index.docker.io/modelbrouwers/brouwers:{{ mb_docker_version }}"
 mb_docker_django_domain: django.modelbrouwers.nl

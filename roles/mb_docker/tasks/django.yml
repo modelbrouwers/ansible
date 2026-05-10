@@ -29,6 +29,8 @@
     networks_cli_compatible: yes
     privileged: no
     restart_policy: always
+    memory: 250M
+    memory_reservation: 10M
 
 - name: Ensure Django container is running
   community.general.docker_container:
@@ -72,7 +74,7 @@
       LEGACY_SHOP_DB_USER: "{{ mb_docker_django_db.legacy_shop.user }}"
       LEGACY_SHOP_DB_PASSWORD: "{{ mb_docker_django_db.legacy_shop.password }}"
       LOG_STDOUT: 'yes'
-      CACHE_URL: "memcached-{{ mb_docker_hostname_suffix | mandatory }}:11211"
+      CACHE_DEFAULT: "redis-{{ mb_docker_hostname_suffix | mandatory }}:6379/0"
       SESSION_COOKIE_DOMAIN: "{{ mb_docker_django_session_cookie_domain }}"
       MIBBIT_SETTINGS: "{{ mb_docker_django_mibbit_settings }}"
       PHPBB_UID_COOKIE: "{{ mb_docker_phpbb_uid_cookie }}"
