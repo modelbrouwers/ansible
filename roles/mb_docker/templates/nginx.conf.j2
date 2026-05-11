@@ -18,7 +18,7 @@ map $geoip2_country_code $country_aware_remote_addr {
 ##
 limit_req_zone $country_aware_remote_addr zone=mb_by_country:10m rate=10r/m;
 
-limit_req_zone $binary_remote_addr zone=static_assets rate=20r/s;
+limit_req_zone $binary_remote_addr zone=static_assets:10m rate=100r/s;
 
 # Proxy to backing Docker containers
 
