@@ -166,7 +166,7 @@ server {
     location /media/ {
         expires 30d;
         alias {{ mb_docker_volumes.media.symlink }}/;
-        limit_req zone=static_assets burst=15;
+        limit_req zone=static_assets burst=100;
     }
 
     location /protected/ {
