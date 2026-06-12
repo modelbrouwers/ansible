@@ -29,7 +29,7 @@
     networks_cli_compatible: yes
     privileged: no
     restart_policy: always
-    memory: 250M
+    memory: 500M  # sorl-thumbnail KV store eats a lot of space
     memory_reservation: 10M
 
 - name: Ensure Django container is running
