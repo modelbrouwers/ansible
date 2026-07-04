@@ -37,6 +37,7 @@ upstream {{ mb_docker_nginx_prefix }}_shop {
 # Redirect non-https to https
 server {
     listen 80;
+    listen [::]:80;
     server_name {{ mb_docker_server.name }} {{ mb_docker_server.aliases|join(' ') }};
     return 301 https://{{ server.name }}$request_uri;
 }
@@ -44,6 +45,7 @@ server {
 # https virtual host
 server {
     listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name {{ mb_docker_server.name }} {{ mb_docker_server.aliases|join(' ') }};
 
     limit_req zone=mb_by_country burst=15 nodelay;
@@ -190,12 +192,14 @@ server {
 
 server {
     listen 80;
+    listen [::]:80;
     server_name albums.{{ mb_docker_server.name }};
     return 301 https://albums.{{ mb_docker_server.name }}$request_uri;
 }
 
 server {
     listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     server_name albums.{{ mb_docker_server.name }};
     root {{ mb_docker_volume_storage_root }}/legacy/;
 

@@ -1,3 +1,6 @@
+#
+# {{ ansible_managed }}
+#
 upstream {{ nginx_prefix }}_backend {
     server 127.0.0.1:{{ nginx_proxy_port }};
 }
@@ -5,6 +8,7 @@ upstream {{ nginx_prefix }}_backend {
 # redirect non-ssl to ssl
 server {
     listen 80;
+    listen [::]:80;
     server_name {{ nginx_hostname }};
     return 301 https://{{ nginx_hostname }}$request_uri;
 }
@@ -20,7 +24,8 @@ map $upstream_http_docker_distribution_api_version $docker_distribution_api_vers
 
 # ssl
 server {
-    listen       443;
+    listen       443 ssl http2;
+    listen       [::]:443 ssl http2;
     server_name  {{ nginx_hostname }};
 
     error_log /var/log/nginx/{{ nginx_prefix }}/error.log warn;
