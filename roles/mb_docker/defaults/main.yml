@@ -130,3 +130,5 @@ mb_docker_server:
 mb_docker_cronjobs: []
 
 mb_docker_geoip_database_path: /tmp/geoip/
+
+mb_docker_allowlist_countries: []  # ISO codes like BE/NL/DE
